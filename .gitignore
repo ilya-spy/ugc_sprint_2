@@ -1,3 +1,3 @@
 **/.env
 **/Pipfile*
-dev
+**/__pycache__

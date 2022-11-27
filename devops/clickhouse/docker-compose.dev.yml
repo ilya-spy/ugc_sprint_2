@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  clickhouse-admin:
+    build:
+      target: develop
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    command: ["/bin/bash"]
+    volumes:
+      - ../../src:/usr/src/clickhouse_admin

@@ -1,6 +1,8 @@
-from extension.kafka_setting import BootstrapServersReferenceMixin as BootstrapServers
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
+
 from kafka import KafkaConsumer
+
+from extension.kafka_setting import BootstrapServers
 
 
 class BaseConsumer(BootstrapServers, ABC):
@@ -9,17 +11,11 @@ class BaseConsumer(BootstrapServers, ABC):
     def topic_name(self) -> str:
         """Topic where to produce"""
 
-    @property
-    @abstractmethod
-    def group_id(self) -> str:
-        pass
-
     def __init__(self):
         self.consumer = KafkaConsumer(
             self.topic_name,
-            auto_offset_reset='earliest',
-            group_id=self.group_id,
-            bootstrap_servers=self.bootstrap_servers
+            auto_offset_reset="earliest",
+            bootstrap_servers=self.bootstrap_servers,
         )
 
     def consume(self):

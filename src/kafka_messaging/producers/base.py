@@ -1,6 +1,8 @@
-from extension.kafka_setting import BootstrapServersReferenceMixin as BootstrapServers
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
+
 from kafka import KafkaProducer
+
+from extension.kafka_setting import BootstrapServers as BootstrapServers
 
 
 class BaseProducer(BootstrapServers, ABC):

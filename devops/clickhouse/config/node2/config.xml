@@ -15,7 +15,7 @@
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
-    <interserver_http_host>clickhouse-node2</interserver_http_host>
+    <interserver_http_host>company_cluster-node2</interserver_http_host>
     <interserver_http_port>9009</interserver_http_port>
 
     <max_connections>4096</max_connections>
@@ -39,24 +39,24 @@
             <shard>
                 <replica>
                     <default_database>shard</default_database>
-                    <host>clickhouse-node1</host>
+                    <host>company_cluster-node1</host>
                     <port>9000</port>
                 </replica>
                 <replica>
                     <default_database>replica</default_database>
-                    <host>clickhouse-node2</host>
+                    <host>company_cluster-node2</host>
                     <port>9000</port>
                 </replica>
             </shard>
             <shard>
                 <replica>
                     <default_database>shard</default_database>
-                    <host>clickhouse-node3</host>
+                    <host>company_cluster-node3</host>
                     <port>9000</port>
                 </replica>
                 <replica>
                     <default_database>replica</default_database>
-                    <host>clickhouse-node4</host>
+                    <host>company_cluster-node4</host>
                     <port>9000</port>
                 </replica>
             </shard>
@@ -73,7 +73,7 @@
     <macros>
         <cluster>company_cluster</cluster>
         <shard>1</shard>
-        <replica>clickhouse-node2</replica>
+        <replica>company_cluster-node2</replica>
     </macros>
 
     <distributed_ddl>

@@ -96,3 +96,17 @@ docker/down:
 docker/destroy:
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 .PHONY: docker/destroy
+
+#
+# Докер команды приложения
+#
+clickhouse/docker/admin:
+	@docker exec -it clickhouse-admin bash
+clickhouse/docker/node1:
+	@docker exec -it clickhouse-node1 bash
+clickhouse/docker/node2:
+	@docker exec -it clickhouse-node2 bash
+clickhouse/docker/node3:
+	@docker exec -it clickhouse-node3 bash
+clickhouse/docker/node4:
+	@docker exec -it clickhouse-node4 bash

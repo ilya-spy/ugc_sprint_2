@@ -1,5 +1,6 @@
 from config import config
 from olap import ReplicatedOlapCluster
+from extension import kafka_setting
 
 def init_cluster():
     """init clickhouse olap cluster"""
@@ -14,3 +15,4 @@ def init_cluster():
 if __name__ == '__main__':
     olap_cluster = init_cluster()
     print(olap_cluster.nodenames, olap_cluster.node)
+    kafka_setting.kafka_init()

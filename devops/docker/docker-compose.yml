@@ -1,0 +1,22 @@
+version: "3.9"
+
+networks:
+  yp_network:
+    name: yp_network
+    external: true
+
+services:
+  ugc_gate_api:
+    build:
+      context: ../../
+      dockerfile: devops/docker/gate/Dockerfile
+      target: develop
+    container_name: yp_ugc_gate
+    user: "gatekeeper"
+    restart: always
+    ports:
+      - "8004:8000"
+    env_file:
+      - ../../devops/gate/.env
+    networks:
+      - yp_network

@@ -10,3 +10,13 @@
 
     # запуск prod окружения  
     make clickhouse/setup/prod  
+
+### Запуск Гейта
+
+```shell
+cd devops/docker
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file ../.env build
+
+# подключиться к контейнеру
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec ugc_gate_api bash
+```

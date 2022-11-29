@@ -32,6 +32,12 @@ clickhouse/setup/prod:
 	@make setup/base
 .PHONY: clickhouse/setup/prod
 
+clickhouse/down/dev: export DOCKER_DIR := devops/clickhouse
+clickhouse/down/dev: export DOCKER_TARGET := dev
+clickhouse/down/dev: export DOCKER_COMPOSE := docker-compose -f $(DOCKER_DIR)/docker-compose.yml -f $(DOCKER_DIR)/docker-compose.$(DOCKER_TARGET).yml --env-file .env
+clickhouse/down/dev:
+	@make docker/destroy
+
 
 #
 # Настроить базовое окружение для всех конфигураций
@@ -56,6 +62,7 @@ setup/base:
 		`id -g | xargs -I '{}' sed -i '' 's/HOST_GID=.*/HOST_GID={}/' .env`; \
 	fi
 	@cat .env
+
 	@printf "\n\nSetting up compose target: $(DOCKER_TARGET)\n"
 	@make docker/destroy
 	@make docker/build
@@ -67,7 +74,6 @@ setup/base:
 #
 # Докер команды для управления контейнерами
 #
-
 ## построить контейнеры
 docker/build:
 	$(DOCKER_COMPOSE) build
@@ -96,6 +102,7 @@ docker/down:
 docker/destroy:
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 .PHONY: docker/destroy
+
 
 #
 # Докер команды приложения

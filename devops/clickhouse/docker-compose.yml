@@ -51,6 +51,8 @@ services:
       args:
         uid: ${HOST_UID}
         gid: ${HOST_GID}
+    env_file:
+      - .env
     container_name: clickhouse-admin
     hostname: clickhouse-admin
     depends_on:

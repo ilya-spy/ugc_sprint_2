@@ -1,13 +1,16 @@
+from config import config
 from olap import ReplicatedOlapCluster
-from olap import OLAP_VIEWS_CLUSTER, OLAP_VIEWS_PATH
-from olap import OLAP_VIEWS_SCHEMA, OLAP_VIEWS_DB
 
-if __name__ == "main":
-
-    # init clickhouse olap cluster
-    olap_cluster = ReplicatedOlapCluster(
-        cluster=OLAP_VIEWS_CLUSTER,
-        path=OLAP_VIEWS_PATH,
-        db=OLAP_VIEWS_DB,
-        schema=OLAP_VIEWS_SCHEMA
+def init_cluster():
+    """init clickhouse olap cluster"""
+    return ReplicatedOlapCluster(
+        cluster=config.olap.cluster,
+        path=config.olap.path,
+        name=config.olap.table,
+        schema=config.olap.scheme,
+        shards=4
     )
+
+if __name__ == '__main__':
+    olap_cluster = init_cluster()
+    print(olap_cluster.nodenames, olap_cluster.node)

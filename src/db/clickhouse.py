@@ -1,10 +1,15 @@
 import abc
-
+import logging
 from dataclasses import dataclass, field
 from typing import List
 
 from clickhouse_driver import Client
 
+from config import setup_logger
+
+
+logger = logging.getLogger(__name__)
+logger = setup_logger(logger)
 
 @dataclass
 class IDistributedOLAPTable:
@@ -18,9 +23,12 @@ class IDistributedOLAPTable:
     name: str
     schema: str
     partition: str
-    location: str
-    engine: str
+    replica: str
+    root: str
+    shard: str
     key: str
+
+    engine: str
 
     def __post_init__(self):
         """Вычислить дополнительные поля после инициализации основных"""
@@ -45,17 +53,16 @@ class IDistributedOLAPData:
         self.serialized = ','.join(self.values)
 
 
+@dataclass
 class ClickHouseMergeTable(IDistributedOLAPTable):
-        engine: str = field(default='MergeTree()')
+    engine: str = field(default='MergeTree()')
 
-class ClickHouseReplicatedTable(IDistributedOLAPTable):
-        root: str
 
-        def __post_init__(self):
-            """Вычислить дополнительные поля после инициализации основных"""
-            super.__post_init__(self)
-
-            self.engine = f"ReplicatedMergeTree('{self.root}{self.location}', '{self.name}')"
+@dataclass
+class ClickHouseReplicatedTable(ClickHouseMergeTable):
+    def __post_init__(self):
+        """Вычислить дополнительные поля после инициализации основных"""
+        self.engine = f"ReplicatedMergeTree('{self.root}/{self.shard}/{self.name}', '{self.replica}')"
 
 
 class IDistributedOLAPClient(abc.ABC):
@@ -103,7 +110,9 @@ class ClickHouseClient(IDistributedOLAPClient):
 
     def create_distributed_table(self, db: str, table: IDistributedOLAPTable):
         operator = f'CREATE TABLE IF NOT EXISTS {db}.{table.name} ON CLUSTER {self.cluster}'
+        logger.info(operator)
         table = f'{table.schema} Engine={table.engine} PARTITION BY {table.partition} ORDER BY {table.key}'
+        logger.info(table)
 
         result = self.client.execute(' '.join([operator, table]))
         return result

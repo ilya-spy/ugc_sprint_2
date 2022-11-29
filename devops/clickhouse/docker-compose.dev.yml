@@ -9,3 +9,15 @@ services:
     command: ["/bin/bash"]
     volumes:
       - ../../src:/usr/src/clickhouse_admin
+
+  clickhouse-node2:
+    ports:
+      - "9001:9000"
+
+  clickhouse-node3:
+    ports:
+      - "9002:9000"
+
+  clickhouse-node4:
+    ports:
+      - "9003:9000"

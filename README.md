@@ -11,5 +11,34 @@
     # запуск prod окружения  
     make clickhouse/setup/prod  
 
+
+### Запуск Гейта
+
+```shell
+cd devops/docker
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file ../.env build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file ../.env up
+
+# подключиться к контейнеру
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec ugc_gate_api bash
+```
+
+### Ручное тестирование
+
+```shell
+# для неавторизованного пользователя должно вернуть ошибку
+curl -X 'POST' 'http://localhost:8004/api/v1/progress/' -H 'accept: application/json' -d ''
+
+# ...к этому моменту должны быть подняты все микросервисы Проекат
+
+# создаём нового пользователя и заолгиниться
+curl -XPOST -H "Content-Type: application/json" http://localhost/auth_api/v1/user -d '{"username": "test_user","email": "test@gmail.com","password": "12345"}'
+export AUTH_API_ACCESS_TOKEN=$(curl -s -XPOST -H "Content-Type: application/json" http://localhost/auth_api/v1/login -d '{"username": "test_user", "password": "12345"}' | jq '.access' | xargs -L 1)
+
+# отправляем данные от имени авторизованного пользователя
+curl -X 'POST' 'http://localhost:8004/api/v1/progress/' -H 'accept: application/json' -H "Authorization: Bearer $AUTH_API_ACCESS_TOKEN" -d ''
+```
+
 ### Запуск Kafka
     # запуск контейнеров kafka и zookeeper
+

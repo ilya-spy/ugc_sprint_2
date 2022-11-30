@@ -1,2 +1,0 @@
-from kafka_messaging.consumers.watching_progress import WatchingProgBaseConsumer
-from kafka_messaging.producers.watching_progress import WatchingProgressProducer

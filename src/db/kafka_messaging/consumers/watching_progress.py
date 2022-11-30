@@ -1,4 +1,4 @@
-from kafka_messaging.consumers.base import BaseConsumer
+from db.kafka_messaging.consumers.base import BaseConsumer
 
 
 class WatchingProgBaseConsumer(BaseConsumer):

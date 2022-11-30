@@ -11,6 +11,7 @@
     # запуск prod окружения  
     make clickhouse/setup/prod  
 
+
 ### Запуск Гейта
 
 ```shell
@@ -37,3 +38,7 @@ export AUTH_API_ACCESS_TOKEN=$(curl -s -XPOST -H "Content-Type: application/json
 # отправляем данные от имени авторизованного пользователя
 curl -X 'POST' 'http://localhost:8004/api/v1/progress/' -H 'accept: application/json' -H "Authorization: Bearer $AUTH_API_ACCESS_TOKEN" -d ''
 ```
+
+### Запуск Kafka
+    # запуск контейнеров kafka и zookeeper
+

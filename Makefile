@@ -117,3 +117,10 @@ clickhouse/docker/node3:
 	@docker exec -it clickhouse-node3 bash
 clickhouse/docker/node4:
 	@docker exec -it clickhouse-node4 bash
+
+#
+# Запуск kafka и zookeeper
+#
+kafka/start:
+	docker-compose -f devops/kafka/docker-compose.yml up -d
+.PHONY: test

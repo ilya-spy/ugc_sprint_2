@@ -10,3 +10,6 @@
 
     # запуск prod окружения  
     make clickhouse/setup/prod  
+
+### Запуск Kafka
+    # запуск контейнеров kafka и zookeeper

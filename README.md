@@ -16,6 +16,7 @@
 ```shell
 cd devops/docker
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file ../.env build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file ../.env up
 
 # подключиться к контейнеру
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec ugc_gate_api bash

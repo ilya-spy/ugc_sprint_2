@@ -1,19 +1,15 @@
 from fastapi import APIRouter, Depends
 
 from api.schemas.common import DefaultSuccessResponse
-from service.kafka import KafkaService, get_kafka_service
+from service.event_storage import EventStorageService, get_event_storage_service
 
 router = APIRouter()
 
 
-@router.get(path="/", response_model=DefaultSuccessResponse)
+@router.post(path="/", response_model=DefaultSuccessResponse)
 async def save(
-    kafka_service: KafkaService = Depends(get_kafka_service)
+    event_storage_service: EventStorageService = Depends(get_event_storage_service)
 ) -> DefaultSuccessResponse:
-    # kafka_service.pub(data="111")
+    await event_storage_service.send("tp_1", {"a": 1})
 
-    import logging
-    logging.error("OK")
-
-    return "OOOOL"
     return DefaultSuccessResponse()

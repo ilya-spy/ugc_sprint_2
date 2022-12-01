@@ -32,12 +32,17 @@ clickhouse/setup/prod:
 	@make setup/base
 .PHONY: clickhouse/setup/prod
 
-clickhouse/down/dev: export DOCKER_DIR := devops/clickhouse
-clickhouse/down/dev: export DOCKER_TARGET := dev
-clickhouse/down/dev: export DOCKER_COMPOSE := docker-compose -f $(DOCKER_DIR)/docker-compose.yml -f $(DOCKER_DIR)/docker-compose.$(DOCKER_TARGET).yml --env-file .env
-clickhouse/down/dev:
+clickhouse/teardown/dev: export DOCKER_DIR := devops/clickhouse
+clickhouse/teardown/dev: export DOCKER_TARGET := dev
+clickhouse/teardown/dev: export DOCKER_COMPOSE := docker-compose -f $(DOCKER_DIR)/docker-compose.yml -f $(DOCKER_DIR)/docker-compose.$(DOCKER_TARGET).yml --env-file .env
+clickhouse/teardown/dev:
 	@make docker/destroy
 
+clickhouse/teardown/prod: export DOCKER_DIR := devops/clickhouse
+clickhouse/teardown/prod: export DOCKER_TARGET := prod
+clickhouse/teardown/prod: export DOCKER_COMPOSE := docker-compose -f $(DOCKER_DIR)/docker-compose.yml -f $(DOCKER_DIR)/docker-compose.$(DOCKER_TARGET).yml --env-file .env
+clickhouse/teardown/prod:
+	@make docker/destroy
 
 #
 # Настроить базовое окружение для всех конфигураций

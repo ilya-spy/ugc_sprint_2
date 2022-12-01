@@ -11,6 +11,7 @@ class OLAPSettings(BaseSettings):
     scheme: str = Field(default='()')
     partition: str = Field(default='')
     orderby: str = Field(default='')
+    populate: int = Field(default=0)
 
     class Config:
         env_prefix = 'olap_views_'

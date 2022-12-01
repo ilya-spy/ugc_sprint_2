@@ -14,5 +14,4 @@ def init_cluster():
 
 if __name__ == '__main__':
     olap_cluster = init_cluster()
-    print(olap_cluster.nodenames, olap_cluster.node)
     kafka_setting.kafka_init()

@@ -3,7 +3,8 @@ import logging
 from typing import List, Tuple
 
 from config import config, setup_logger
-from db.clickhouse import ClickHouseClient, ClickHouseReplicatedTable
+from db.clickhouse import ClickHouseClient, IDistributedOLAPData
+from db.clickhouse import ClickHouseReplicatedTable, ClickHouseDistributedProxyTable
 
 
 logger = logging.getLogger(__name__)
@@ -32,25 +33,36 @@ class ReplicatedOlapCluster:
 
     def init_table(
             self, 
-            node: ClickHouseClient, 
+            node: ClickHouseClient,
             db: str,
             shard: str,
-            replica: str
+            replica: str = ''
         ):
         """Инициализация распределенной таблицы на ноде кластера"""
+        common_params = {
+                            'name': config.olap.table,
+                            'schema':config.olap.scheme,
+                            'partition':config.olap.partition,
+                            'replica':replica,
+                            'root':config.olap.path,
+                            'shard':shard,
+                            'key':config.olap.orderby
+                        }
+        if replica:
+            logger.info('Create replicated table: %s', replica)
+            table = ClickHouseReplicatedTable(
+                **common_params
+            )
+        else:
+            logger.info('Finalize distributed table: %s on %s', config.olap.table, self.cluster)
+            table = ClickHouseDistributedProxyTable(
+                **common_params,
+                cluster=self.cluster
+            )
 
-        logger.info('Create shard table: %s', replica)
-        shard_table = ClickHouseReplicatedTable(
-            name=config.olap.table,
-            schema=config.olap.scheme,
-            partition=config.olap.partition,
-            replica=replica,
-            root=config.olap.path,
-            shard=shard,
-            key=config.olap.orderby
-        )
-        node.create_distributed_table(db, shard_table)
-
+        # Запросить создание выбранной таблицы или прокси
+        node.create_distributed_table(db, table)
+        return table
 
     def __init__(self,
                  cluster: str,
@@ -73,7 +85,7 @@ class ReplicatedOlapCluster:
         self.nodenames = list(
             map(lambda idx: 'node' + str(idx), range(1, self.shards + 1))
         )
-        
+
         self.node = []
         for idx, name in enumerate(self.nodenames):
             node: ClickHouseClient = self.init_node(idx, name)
@@ -86,8 +98,8 @@ class ReplicatedOlapCluster:
             #  Replica 2  Replica 1  ...  Replica N    Replica N-1  #
 
             # add master table shard on current node
-            self.init_table(node, 'shard', self.shardnames[idx], self.shardnames[idx] + '_original')
-            
+            self.init_table(node, 'shard', self.shardnames[idx], self.shardnames[idx] + '_master')
+
             # setup first node in a pair to be replicated on the next sibling
             if idx % 2 == 0:
                 self.init_table(node, 'replica', self.shardnames[idx + 1], self.shardnames[idx + 1] + '_replica')
@@ -95,3 +107,12 @@ class ReplicatedOlapCluster:
             # setup last node in a pair to be replicated on the previous sibling
             if idx % 2 == 1:
                 self.init_table(node, 'replica', self.shardnames[idx - 1], self.shardnames[idx - 1] + '_replica')
+
+            # setup distributed table proxy frontend to route between shard and replica
+            frontend_table = self.init_table(node, 'default', self.shardnames[idx])
+
+            # generate some random data to check shards distribution
+            values = IDistributedOLAPData([ f'({i}, {idx}, 100, {1000+i*idx}, now())' for i in range(config.olap.populate) ])
+
+            node.insert_into_table('default', frontend_table, (values))
+

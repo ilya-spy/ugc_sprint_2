@@ -21,25 +21,21 @@ class IDistributedOLAPTable:
     COLUMN_TYPES    = [COLUMN_INT32, COLUMN_INT64, COLUMN_DATETIME]
 
     name: str
-    schema: str
-    partition: str
-    replica: str
-    root: str
-    shard: str
-    key: str
-
-    engine: str
+    schema: str = field(default='(id UUID)')
+    partition: str = field(default='id')
+    replica: str = field(default='default')
+    root: str = field(default='/clickhouse/tables/')
+    shard: str = field(default='default')
+    key: str = field(default='id')
 
     def __post_init__(self):
         """Вычислить дополнительные поля после инициализации основных"""
         
         # Имена колонок без типов, для формирвоания запросов на чтение/запись
-        self.columns = self.schema
-        for column_type in self.COLUMN_TYPES:
-            self.columns = self.columns.replace(column_type, '')
-
-        self.columns = self.columns.split(',')
-
+        if not hasattr(self, 'columns'):
+            self.columns = self.schema
+            for column_type in self.COLUMN_TYPES:
+                self.columns = self.columns.replace(column_type, '')
 
 @dataclass
 class IDistributedOLAPData:
@@ -59,9 +55,26 @@ class ClickHouseMergeTable(IDistributedOLAPTable):
 
 
 @dataclass
-class ClickHouseReplicatedTable(ClickHouseMergeTable):
+class ClickHouseDistributedProxyTable(IDistributedOLAPTable):
+    cluster: str = field(default='clickhouse')
+    
     def __post_init__(self):
         """Вычислить дополнительные поля после инициализации основных"""
+        super().__post_init__()
+
+        self.engine = f"Distributed('{self.cluster}', '', {self.name}, rand())"
+        
+        # Выключить генерацию расширенного CREATE TABLE, для прокси он не используются
+        self.partition = None
+        self.key = None
+
+
+@dataclass
+class ClickHouseReplicatedTable(IDistributedOLAPTable):
+    def __post_init__(self):
+        """Вычислить дополнительные поля после инициализации основных"""
+        super().__post_init__()
+
         self.engine = f"ReplicatedMergeTree('{self.root}/{self.shard}/{self.name}', '{self.replica}')"
 
 
@@ -109,18 +122,23 @@ class ClickHouseClient(IDistributedOLAPClient):
         return self.client.execute(operator)
 
     def create_distributed_table(self, db: str, table: IDistributedOLAPTable):
-        operator = f'CREATE TABLE IF NOT EXISTS {db}.{table.name} ON CLUSTER {self.cluster}'
-        logger.info(operator)
-        table = f'{table.schema} Engine={table.engine} PARTITION BY {table.partition} ORDER BY {table.key}'
-        logger.info(table)
+        operator = f'CREATE TABLE IF NOT EXISTS {db}.{table.name}'
+        header = f'{table.schema} Engine={table.engine}'
+        logger.debug('%s %s', operator, header)
 
-        result = self.client.execute(' '.join([operator, table]))
+        partition = f'PARTITION BY {table.partition}' if table.partition else ''
+        order = f'ORDER BY {table.key}' if table.key else ''
+
+        result = self.client.execute(' '.join([operator, header, partition, order]))
         return result
 
     def insert_into_table(self, db: str, table: IDistributedOLAPTable, data: IDistributedOLAPData):
-        operator = f'INSERT INTO {db}.{table.name} {",".join(table.columns)}'
+        operator = f'INSERT INTO {db}.{table.name} {table.columns}'
         data = f'VALUES {data.serialized}'
-        
+
+        logger.debug(operator)
+        logger.debug(data)
+
         result = self.client.execute(' '.join([operator, data]))
         return result
 

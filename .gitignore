@@ -1,3 +1,6 @@
 **/.env
 **/Pipfile*
 **/__pycache__
+
+venv/
+.idea/

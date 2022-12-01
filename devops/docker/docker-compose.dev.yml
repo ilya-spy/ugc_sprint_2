@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  ugc_gate_api:
+    build:
+      args:
+        uid: ${HOST_UID}
+        gid: ${HOST_GID}
+    command: ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--reload", "main:app"]
+    ports:
+      - "8004:8000"
+    volumes:
+      - ../../:/usr/src/app

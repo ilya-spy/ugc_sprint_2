@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    env_file:
+      - ../../kafka/.env
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: zookeeper:3.5
+    hostname: zookeeper

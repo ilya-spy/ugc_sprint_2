@@ -14,7 +14,7 @@ services:
       - "8123:8123"
       - "9000:9000"
     volumes:
-      - ./config/node1:/etc/clickhouse-server
+      - ../../clickhouse/config/node1:/etc/clickhouse-server
     depends_on:
       - zookeeper
 
@@ -23,7 +23,7 @@ services:
     container_name: clickhouse-node2
     hostname: clickhouse-node2
     volumes:
-      - ./config/node2:/etc/clickhouse-server
+      - ../../clickhouse/config/node2:/etc/clickhouse-server
     depends_on:
       - zookeeper
 
@@ -32,7 +32,7 @@ services:
     container_name: clickhouse-node3
     hostname: clickhouse-node3
     volumes:
-      - ./config/node3:/etc/clickhouse-server
+      - ../../clickhouse/config/node3:/etc/clickhouse-server
     depends_on:
       - zookeeper
 
@@ -41,18 +41,19 @@ services:
     container_name: clickhouse-node4
     hostname: clickhouse-node4
     volumes:
-      - ./config/node4:/etc/clickhouse-server
+      - ../../clickhouse/config/node4:/etc/clickhouse-server
     depends_on:
       - zookeeper
 
   clickhouse-admin:
     build:
-      context: .
+      context: ../../..
+      dockerfile: devops/docker/clickhouse/Dockerfile
       args:
         uid: ${HOST_UID}
         gid: ${HOST_GID}
     env_file:
-      - .env
+      - ../../clickhouse/.env
     container_name: clickhouse-admin
     hostname: clickhouse-admin
     depends_on:

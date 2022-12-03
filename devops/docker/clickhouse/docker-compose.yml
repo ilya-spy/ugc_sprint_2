@@ -14,7 +14,7 @@ services:
       - yp_network
   
   node1:
-    image: yandex/clickhouse-server:20.4
+    image: yandex/clickhouse-server:22.1
     container_name: clickhouse-node1
     hostname: clickhouse-node1
     networks:
@@ -28,7 +28,7 @@ services:
       - zookeeper
 
   node2:
-    image: yandex/clickhouse-server:20.4
+    image: yandex/clickhouse-server:22.1
     container_name: clickhouse-node2
     hostname: clickhouse-node2
     networks:
@@ -39,7 +39,7 @@ services:
       - zookeeper
 
   node3:
-    image: yandex/clickhouse-server:20.4
+    image: yandex/clickhouse-server:22.1
     container_name: clickhouse-node3
     hostname: clickhouse-node3
     networks:
@@ -50,7 +50,7 @@ services:
       - zookeeper
 
   node4:
-    image: yandex/clickhouse-server:20.4
+    image: yandex/clickhouse-server:22.1
     container_name: clickhouse-node4
     hostname: clickhouse-node4
     networks:

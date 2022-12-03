@@ -16,52 +16,49 @@ help:
 	@echo "(Other less used targets are available, open Makefile for details)"
 .PHONY: help
 
+
 #
 # Команды развёртывания UGC стенда (все сервисы вместе, ниже есть команды для запуска компонент по отдельности)
 #
-ugc/%: export DEVOPS_DIR := devops/etl
-ugc/%: export DOCKER_DIR := devops/docker
+ugc/dev/setup:
+	make clickhouse/dev/setup
+	make kafka/dev/setup
+	make gate/dev/setup
+.PHONY: ugc/dev/setup
 
-ugc/setup/dev: export DOCKER_TARGET := dev
-ugc/setup/dev:
-	@make docker/prepare
-	@make docker/setup
-.PHONY: ugc/setup/dev
-
-ugc/teardown/dev: export DOCKER_TARGET := dev
-ugc/teardown/dev:
-	@make docker/prepare
-	@make docker/destroy
-.PHONY: ugc/teardown/dev
+ugc/dev/teardown:
+	make gate/dev/teardown
+	make kafka/dev/teardown
+	make clickhouse/dev/teardown
+.PHONY: ugc/dev/teardown
 
 #
 # Команды развертывания и доступа в кластер ClickHouse
 #
 clickhouse/%: export DOCKER_DIR := devops/docker/clickhouse
 
-clickhouse/setup/dev: export DOCKER_TARGET := dev
-clickhouse/setup/dev:
+clickhouse/dev/%: export DOCKER_TARGET := dev
+clickhouse/prod/%: export DOCKER_TARGET := prod
+
+clickhouse/dev/setup:
 	@make docker/prepare
 	@make docker/setup
-.PHONY: clickhouse/setup/dev
+.PHONY: clickhouse/dev/setup
 
-clickhouse/setup/prod: export DOCKER_TARGET := prod
-clickhouse/setup/prod:
+clickhouse/prod/setup:
 	@make docker/prepare
 	@make docker/setup
-.PHONY: clickhouse/setup/prod
+.PHONY: clickhouse/prod/setup
 
-clickhouse/teardown/dev: export DOCKER_TARGET := dev
-clickhouse/teardown/dev:
+clickhouse/dev/teardown:
 	@make docker/prepare
 	@make docker/destroy
 .PHONY: clickhouse/teardown/dev
 
-clickhouse/teardown/prod: export DOCKER_TARGET := prod
-clickhouse/teardown/prod:
+clickhouse/prod/teardown:
 	@make docker/prepare
 	@make docker/destroy
-.PHONY: clickhouse/teardown/prod
+.PHONY: clickhouse/prod/teardown
 
 clickhouse/docker/admin:
 	@docker exec -it clickhouse-admin bash
@@ -78,19 +75,39 @@ clickhouse/docker/node4:
 #
 # Команды развертывания и доступа в Kafka
 #
-kafka/%: export DEVOPS_DIR := devops/kafka
 kafka/%: export DOCKER_DIR := devops/docker/kafka
 
-kafka/setup/dev: export DOCKER_TARGET := dev
-kafka/setup/dev:
+kafka/dev/%: export DOCKER_TARGET := dev
+kafka/prod/%: export DOCKER_TARGET := prod
+
+kafka/dev/setup:
 	@make docker/prepare
 	@make docker/setup
-.PHONY: kafka/setup/dev
+.PHONY: kafka/dev/setup
 
-kafka/teardown/dev: export DOCKER_TARGET := dev
-kafka/teardown/dev:
+kafka/dev/teardown:
 	@make docker/prepare
 	@make docker/destroy
+.PHONY: kafka/dev/teardown
+
+
+#
+# Команды развёртывания API шлюза для отправки событий с отметками о просмотрах в Кафку
+#
+gate/%: export DOCKER_DIR := devops/docker/gate
+
+gate/dev/%: export DOCKER_TARGET := dev
+gate/prod/%: export DOCKER_TARGET := prod
+
+gate/dev/setup:
+	@make docker/prepare
+	@make docker/setup
+.PHONY: kafka/dev/setup
+
+gate/dev/teardown:
+	@make docker/prepare
+	@make docker/destroy
+.PHONY: kafka/dev/teardown
 
 
 #
@@ -99,15 +116,18 @@ kafka/teardown/dev:
 docker/%: export DOCKER_COMPOSE := docker-compose -f $(DOCKER_DIR)/docker-compose.yml -f $(DOCKER_DIR)/docker-compose.$(DOCKER_TARGET).yml --env-file devops/docker/.env
 
 docker/prepare:
-	@printf "Setting up base environment: $(OS)\n"
-	@find devops -iname ".env.example" -exec cp "{}" $(echo "{}" | sed s/.example//) \;
+	printf "Setting up local environment: $(OS)\n"
+	find devops -name '.env.example' | xargs -I {} sh -c 'cp $${1} $${1/.env.example/.env}' -- {}
+	
+	printf "Create common network environment: yp_network\n"
+	docker network create --driver bridge yp_network || true
 
 	# установить HOST_UID = UID текущего пользователя. Это влияет на UID пользователя внутри контейнера.
 	# Нужно для совместимости прав доступа к сгенерированным файлам у хостового пользователя
 	# На Windows host также необходимо переформатирование команд (кавычки и т.д.)
-	@if [[ $(OS) = 'Darwin' ]]; then \
+	if [[ $(OS) = 'Darwin' ]]; then \
 		`id -u | xargs -I '{}' sed -i '' 's/HOST_UID=.*/HOST_UID={}/' devops/docker/.env`; \
-		`sed -i '' 's/HOST_GID=.*/HOST_GID=61/' ../.env`; \
+		`sed -i '' 's/HOST_GID=.*/HOST_GID=61/' devops/docker/.env`; \
 	elif [[ $(OS) = 'Windows_NT' ]]; then \
 		`id -u | xargs -I '{}' sed -i "s/HOST_UID=.*/HOST_UID={}/" devops/docker/.env`; \
 		`id -g | xargs -I '{}' sed -i "s/HOST_GID=.*/HOST_GID={}/" devops/docker/.env`; \
@@ -115,16 +135,16 @@ docker/prepare:
 		`id -u | xargs -I '{}' sed -i '' 's/HOST_UID=.*/HOST_UID={}/' devops/docker/.env`; \
 		`id -g | xargs -I '{}' sed -i '' 's/HOST_GID=.*/HOST_GID={}/' devops/docker/.env`; \
 	fi
-	@printf "Set up environment for: $(DOCKER_TARGET)\n"
-	@printf "Invoke composer command: $(DOCKER_COMPOSE)\n"
+	printf "Set up environment for: $(DOCKER_TARGET)\n"
+	printf "Invoke composer command: $(DOCKER_COMPOSE)\n"
 docker/prepare:
 .PHONY: docker/prepare
 
 ## перестроить и перезапустить контейнеры
 docker/setup:
-	@make docker/destroy
-	@make docker/build
-	@make docker/start
+	make docker/destroy
+	make docker/build
+	make docker/start
 docker/setup:
 .PHONY: docker/setup
 

@@ -1,23 +1,23 @@
 version: "3.9"
 
 services:
-  clickhouse-admin:
+  admin:
     build:
       target: develop
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     command: ["/bin/bash"]
     volumes:
-      - ../../src:/usr/src/clickhouse_admin
+      - ../../../src:/usr/src/clickhouse_admin
 
-  clickhouse-node2:
+  node2:
     ports:
       - "9001:9000"
 
-  clickhouse-node3:
+  node3:
     ports:
       - "9002:9000"
 
-  clickhouse-node4:
+  node4:
     ports:
       - "9003:9000"

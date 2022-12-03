@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
-  ugc_gate:
+  api:
     build:
+      target: develop
       args:
         uid: ${HOST_UID}
         gid: ${HOST_GID}
@@ -10,7 +11,4 @@ services:
     ports:
       - "8004:8000"
     volumes:
-      - ../../:/usr/src/app
-  ugc_kafka:
-    ports:
-      - 29092:29092
+      - ../../../src/gate:/usr/src/app

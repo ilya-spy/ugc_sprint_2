@@ -4,7 +4,8 @@ from dataclasses import dataclass, field
 from typing import List
 
 from clickhouse_driver import Client
-from etl_config import setup_logger
+
+from config import setup_logger
 
 logger = logging.getLogger(__name__)
 logger = setup_logger(logger)
@@ -17,7 +18,8 @@ class IDistributedOLAPTable:
     COLUMN_INT32 = "Int32"
     COLUMN_INT64 = "Int64"
     COLUMN_DATETIME = "DateTime"
-    COLUMN_TYPES = [COLUMN_INT32, COLUMN_INT64, COLUMN_DATETIME]
+    COLUMN_UUID = "UUID"
+    COLUMN_TYPES = [COLUMN_INT32, COLUMN_INT64, COLUMN_DATETIME, COLUMN_UUID]
 
     name: str
     schema: str = field(default="(id UUID)")

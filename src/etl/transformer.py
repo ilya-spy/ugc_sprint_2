@@ -1,19 +1,23 @@
 from functools import lru_cache
 from typing import Iterator
 
-from models import ClickHouseSchema, KafkaSchema
+from etl import models
 
 
 class Transformer:
-    def transform(self, raw_messages: Iterator[KafkaSchema]) -> ClickHouseSchema:
+    def transform(
+        self, raw_messages: Iterator[models.WatchingProgressKafkaSchema]
+    ) -> models.WatchingProgressClickHouseSchema:
         for msg in raw_messages:
             yield self.transform_unit(raw_msg=msg)
 
     @staticmethod
-    def transform_unit(raw_msg: KafkaSchema) -> ClickHouseSchema:
-        return ClickHouseSchema(
+    def transform_unit(
+        raw_msg: models.WatchingProgressKafkaSchema,
+    ) -> models.WatchingProgressClickHouseSchema:
+        return models.WatchingProgressClickHouseSchema(
             user_id=raw_msg.user_id,
-            film_id=raw_msg.film_id,
+            film_id=raw_msg.movie_id,
             frame=raw_msg.frame,
             event_time=raw_msg.event_time,
         )

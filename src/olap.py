@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 from config import config, setup_logger
 from db.clickhouse import (
@@ -117,8 +118,8 @@ class ReplicatedOlapCluster:
             # generate some random data to check shards distribution
             values = IDistributedOLAPData(
                 [
-                    f"({i}, {idx}, 100, {1000+i*idx}, now())"
-                    for i in range(config.olap.populate)
+                    f"('{uuid.uuid4()}', '{uuid.uuid4()}', '{uuid.uuid4()}', 100, now())"
+                    for _ in range(config.olap.populate)
                 ]
             )
 

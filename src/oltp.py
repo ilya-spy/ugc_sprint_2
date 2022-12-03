@@ -33,7 +33,3 @@ async def create_topics(kafka_admin: KafkaAdminClient, topic_names):
         NewTopic(name=tn, num_partitions=10, replication_factor=1) for tn in topic_names
     ]
     await kafka_admin.create_topics(topics_list)
-
-
-class BootstrapServers:
-    bootstrap_servers = ["localhost:29092"]  # TODO: забирать из конфигов

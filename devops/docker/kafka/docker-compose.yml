@@ -12,7 +12,8 @@ services:
     hostname: kafka-node1
     env_file:
       - ../../kafka/.env
-
+    ports:
+      - "29092:29092"
     depends_on:
       - zookeeper
 
@@ -20,3 +21,19 @@ services:
     image: zookeeper:3.5
     container_name: kafka-zookeeper
     hostname: kafka-zookeeper
+    ports:
+      - "2888:2888"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_NAME: kafka
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2888
+    depends_on:
+      - zookeeper
+      - kafka

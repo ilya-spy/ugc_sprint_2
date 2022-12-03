@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
-  ugc_gate_api:
+  api:
     build:
+      target: develop
       args:
         uid: ${HOST_UID}
         gid: ${HOST_GID}
@@ -10,4 +11,4 @@ services:
     ports:
       - "8004:8000"
     volumes:
-      - ../../:/usr/src/app
+      - ../../../src/gate:/usr/src/app

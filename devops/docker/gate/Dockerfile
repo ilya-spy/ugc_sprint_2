@@ -56,8 +56,6 @@ FROM base AS develop
 
 USER root
 
-WORKDIR ${APP_HOME}/src/gate
-
 RUN apt-get install -y vim make curl git tree jq
 
 USER ${USER}

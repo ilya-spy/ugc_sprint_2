@@ -1,0 +1,80 @@
+version: '3.9'
+
+networks:
+  yp_network:
+    name: yp_network
+    external: true
+
+services:
+  zookeeper:
+    image: zookeeper:3.5
+    container_name: clickhouse-zookeeper
+    hostname: clickhouse-zookeeper
+    networks:
+      - yp_network
+  
+  node1:
+    image: yandex/clickhouse-server:22.1
+    container_name: clickhouse-node1
+    hostname: clickhouse-node1
+    networks:
+      - yp_network
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ../../clickhouse/config/node1:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+
+  node2:
+    image: yandex/clickhouse-server:22.1
+    container_name: clickhouse-node2
+    hostname: clickhouse-node2
+    networks:
+      - yp_network
+    volumes:
+      - ../../clickhouse/config/node2:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+
+  node3:
+    image: yandex/clickhouse-server:22.1
+    container_name: clickhouse-node3
+    hostname: clickhouse-node3
+    networks:
+      - yp_network
+    volumes:
+      - ../../clickhouse/config/node3:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+
+  node4:
+    image: yandex/clickhouse-server:22.1
+    container_name: clickhouse-node4
+    hostname: clickhouse-node4
+    networks:
+      - yp_network
+    volumes:
+      - ../../clickhouse/config/node4:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+
+  admin:
+    build:
+      context: ../../..
+      dockerfile: devops/docker/clickhouse/Dockerfile
+      args:
+        uid: ${HOST_UID}
+        gid: ${HOST_GID}
+    env_file:
+      - ../../clickhouse/.env
+    container_name: clickhouse-admin
+    hostname: clickhouse-admin
+    networks:
+      - yp_network
+    depends_on:
+      - node1
+      - node2
+      - node3
+      - node4

@@ -17,7 +17,6 @@ ENV HOMEDIR=/home/${USER}
 ENV APP_HOME=/usr/src/${USER}
 ENV APP_TEST="/usr/src/${USER}_tests"
 ENV APP_REQUIREMENTS="/usr/src/${USER}_requirements"
-ENV SRC_REQUIREMENTS="requirements"
 ENV PATH="/home/${USER}/.local/bin:${PATH}"
 ENV PYTHONPATH="${PYTHONPATH}:${APP_HOME}"
 
@@ -31,7 +30,7 @@ RUN groupadd -g $gid ${GROUP} && \
     mkdir ${HOMEDIR} && \
     chown -R ${USER}:${GROUP} ${HOMEDIR}
 
-COPY --chown=${USER}:${GROUP} ${SRC_REQUIREMENTS} ${APP_REQUIREMENTS}
+COPY --chown=${USER}:${GROUP} devops/clickhouse/requirements ${APP_REQUIREMENTS}
 
 USER ${USER}
 

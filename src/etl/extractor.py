@@ -15,12 +15,14 @@ class Extractor:
 
     @staticmethod
     def retrieve_ids(msg_key: bytes):
+        """Parsing of user_id and movie_id from kafka message key"""
         raw = msg_key.decode()
         unquoted = raw.rstrip()[1:-1]
         user_id, movie_id = unquoted.split("_")
         return user_id, movie_id
 
     async def extract(self) -> AsyncIterator[KafkaSchema]:
+        """Extracting batch of kafka messages"""
         data = await self.extractor.getmany(timeout_ms=1000, max_records=10000000)
         for pt, msgs in data.items():
             for msg in msgs:

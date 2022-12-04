@@ -1,6 +1,5 @@
 import uuid
 from dataclasses import dataclass
-from datetime import datetime
 from uuid import UUID
 
 
@@ -22,4 +21,4 @@ class WatchingProgressClickHouseSchema:
     user_id: uuid.UUID
     film_id: uuid.UUID
     frame: int
-    event_time: datetime
+    event_time: int | float

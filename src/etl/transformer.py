@@ -1,18 +1,11 @@
 from functools import lru_cache
-from typing import Iterator
 
 from etl import models
 
 
 class Transformer:
-    def transform(
-        self, raw_messages: Iterator[models.WatchingProgressKafkaSchema]
-    ) -> models.WatchingProgressClickHouseSchema:
-        for msg in raw_messages:
-            yield self.transform_unit(raw_msg=msg)
-
     @staticmethod
-    def transform_unit(
+    def transform(
         raw_msg: models.WatchingProgressKafkaSchema,
     ) -> models.WatchingProgressClickHouseSchema:
         return models.WatchingProgressClickHouseSchema(

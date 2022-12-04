@@ -4,8 +4,12 @@ class Manager:
         self.transform = transformer
         self.loader = loader
 
+    async def data_to_load(self):
+        async for kafka_msg in self.extractor.extract():
+            if kafka_msg is not None:
+                yield self.transform.transform(kafka_msg)
+
     async def start(self):
         while True:
-            async for kafka_msg in self.extractor.extract():
-                formatted_msg = self.transform.transform_unit(kafka_msg)
-                self.loader.load(ch_msg=formatted_msg)
+            data_to_load = self.data_to_load()
+            await self.loader.load(ch_msgs=data_to_load)

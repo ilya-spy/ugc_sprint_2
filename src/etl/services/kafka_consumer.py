@@ -12,6 +12,8 @@ async def get_kafka_consumer() -> AIOKafkaConsumer:
     consumer = AIOKafkaConsumer(
         "watching_progress",
         bootstrap_servers=f"{settings.kafka_host}:{settings.kafka_port}",
+        auto_offset_reset="earliest",
+        group_id="6",
     )
 
     await consumer.start()

@@ -17,7 +17,10 @@ async def main():
         loader=load,
     )
 
-    await manage.start()
+    try:
+        await manage.start()
+    finally:
+        await consumer.stop()
 
 
 if __name__ == "__main__":

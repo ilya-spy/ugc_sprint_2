@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, Request, HTTPException, status
-from pydantic import ValidationError
-
 from api.schemas.common import DefaultSuccessResponse
-from service.event_storage import EventStorageService, get_event_storage_service
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from pydantic import ValidationError
 from service.auth_api import AuthApiService, get_auth_api_service
+from service.event_storage import EventStorageService, get_event_storage_service
 
 router = APIRouter()
 

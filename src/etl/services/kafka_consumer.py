@@ -2,18 +2,15 @@ from functools import lru_cache
 
 from aiokafka import AIOKafkaConsumer
 
-from etl.etl_config import get_config
+from config import config
 
 
 @lru_cache
 async def get_kafka_consumer() -> AIOKafkaConsumer:
-    settings = get_config()
-
     consumer = AIOKafkaConsumer(
-        "watching_progress",
-        bootstrap_servers=f"{settings.kafka_host}:{settings.kafka_port}",
-        auto_offset_reset="earliest",
-        group_id="6",
+        config.kafka.watching_progress_topic,
+        bootstrap_servers=f"{config.kafka.host}:{config.kafka.port}",
+        group_id=config.kafka.consumer_group,
     )
 
     await consumer.start()

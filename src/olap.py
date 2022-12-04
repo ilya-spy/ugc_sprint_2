@@ -91,14 +91,17 @@ class ReplicatedOlapCluster:
 
             # add master table shard on current node
             self.init_table(
-                node, "shard", self.shardnames[idx], self.shardnames[idx] + "_master"
+                node,
+                config.olap.db_shard,
+                self.shardnames[idx],
+                self.shardnames[idx] + "_master",
             )
 
             # setup first node in a pair to be replicated on the next sibling
             if idx % 2 == 0:
                 self.init_table(
                     node,
-                    "replica",
+                    config.olap.db_replica,
                     self.shardnames[idx + 1],
                     self.shardnames[idx + 1] + "_replica",
                 )
@@ -107,13 +110,15 @@ class ReplicatedOlapCluster:
             if idx % 2 == 1:
                 self.init_table(
                     node,
-                    "replica",
+                    config.olap.db_replica,
                     self.shardnames[idx - 1],
                     self.shardnames[idx - 1] + "_replica",
                 )
 
             # setup distributed table proxy frontend to route between shard and replica
-            frontend_table = self.init_table(node, "default", self.shardnames[idx])
+            frontend_table = self.init_table(
+                node, config.olap.db_default, self.shardnames[idx]
+            )
 
             # generate some random data to check shards distribution
             values = IDistributedOLAPData(

@@ -1,6 +1,5 @@
-from pydantic import Field
-
 from api.schemas.base import BaseAPISchema
+from pydantic import Field
 
 
 class DefaultSuccessResponse(BaseAPISchema):

@@ -1,7 +1,7 @@
 from functools import lru_cache
-import aiohttp
 
-from models.user import UserRole, User
+import aiohttp
+from models.user import User, UserRole
 
 
 class AuthApiService:
@@ -11,7 +11,9 @@ class AuthApiService:
         Запросить Роли Пользователя. Пользователь закодирован в заголовках, с помощью JWT-токена
         """
         async with aiohttp.ClientSession() as session:
-            async with session.get("http://auth_api:8000/api/v1/me/roles", headers=headers) as resp:
+            async with session.get(
+                "http://auth_api:8000/api/v1/me/roles", headers=headers
+            ) as resp:
                 response = await resp.json()
 
         return [UserRole(**item) for item in response]
@@ -22,7 +24,9 @@ class AuthApiService:
         Получить информацию о Пользователе по JWT-токену в заголовке
         """
         async with aiohttp.ClientSession() as session:
-            async with session.get("http://auth_api:8000/api/v1/me", headers=headers) as resp:
+            async with session.get(
+                "http://auth_api:8000/api/v1/me", headers=headers
+            ) as resp:
                 response = await resp.json()
 
         return User(**response)

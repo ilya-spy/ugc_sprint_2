@@ -5,6 +5,15 @@
 Распределение по командам подготовит команда сопровождения. Куратор поделится с вами списками в Slack в канале #group_projects.  
 Задания на спринт вы найдёте внутри тем.  
 <br>
+# Запуск сервиса
+```
+make ugc/dev/setup
+# после исполнения необходимо создать общую структуру ClickHouse с учетом шардов, реплик и таблиц 
+make clickhouse/docker/admin  
+clickhouse_admin@clickhouse-admin:/usr/src/clickhouse_admin$  python main.py
+```
+
+# Запуск отдельных частей сервиса
 ### Запуск ClickHouse служб  
 ```
 # запуск/остановка dev окружения  
@@ -54,7 +63,3 @@ export AUTH_API_ACCESS_TOKEN=$(curl -s -XPOST -H "Content-Type: application/json
 # отправляем данные от имени авторизованного пользователя
 curl -X 'POST' 'http://localhost:8004/api/v1/progress/' -H 'accept: application/json' -H "Authorization: Bearer $AUTH_API_ACCESS_TOKEN" -d ''
 ```
-
-### Запуск Kafka
-    # запуск контейнеров kafka и zookeeper
-

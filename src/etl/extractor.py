@@ -13,26 +13,14 @@ class Extractor:
     def __init__(self, extractor: AIOKafkaConsumer):
         self.extractor = extractor
 
-    @staticmethod
-    def retrieve_ids(msg_key: bytes):
-        """Parsing of user_id and movie_id from etl message key"""
-        raw = msg_key.decode()
-        unquoted = raw.rstrip()[1:-1]
-        user_id, movie_id = unquoted.split("_")
-        return user_id, movie_id
-
     async def extract(self) -> AsyncIterator[KafkaSchema]:
         """Extracting batch of etl messages"""
         data = await self.extractor.getmany(timeout_ms=1000, max_records=10000000)
         for pt, msgs in data.items():
             for msg in msgs:
                 try:
-                    user_id, movie_id = self.retrieve_ids(msg_key=msg.key)
                     yield KafkaSchema(
-                        frame=msg.value.decode(),
-                        user_id=user_id,
-                        movie_id=movie_id,
-                        event_time=msg.timestamp,
+                        value=msg.value, key=msg.key, event_time=msg.timestamp
                     )
                 except Exception as e:
                     logger.error(e)

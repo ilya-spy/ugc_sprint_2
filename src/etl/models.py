@@ -1,24 +1,23 @@
 import uuid
-from dataclasses import dataclass
-from uuid import UUID
+from typing import Union
+
+from pydantic import BaseModel, Field, validator
 
 
-@dataclass
-class WatchingProgressKafkaSchema:
-    frame: int  # единица просмотра фильма
-    user_id: UUID  # идентификатор пользователя
-    movie_id: UUID  # идентификатор фильма
-    event_time: int | float  # время появления события в кафка
+class WatchingProgressKafkaSchema(BaseModel):
+    value: bytes
+    key: bytes
+    event_time: Union[int, float]
 
-    def __post_init__(self):
-        self.event_time = (
-            self.event_time / 1000 if self.event_time is not None else None
-        )
+    @validator("event_time", pre=True, always=True)
+    def timestamp_to_ms(cls, v):
+        if v is not None:
+            v /= 1000
+        return v
 
 
-@dataclass
-class WatchingProgressClickHouseSchema:
+class WatchingProgressClickHouseSchema(BaseModel):
     user_id: uuid.UUID
     film_id: uuid.UUID
-    frame: int
-    event_time: int | float
+    frame: int = Field(gt=0)
+    event_time: Union[int, float]

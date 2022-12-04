@@ -14,7 +14,7 @@ class Loader:
         )
 
     async def load(self, ch_msgs: AsyncIterator[CHSchema]):
-        """Inserting kafka messages batch"""
+        """Inserting etl messages batch"""
         data = [
             f"('{uuid.uuid4()}', '{ch_msg.user_id}', '{ch_msg.film_id}', {ch_msg.frame}, {ch_msg.event_time})"
             async for ch_msg in ch_msgs

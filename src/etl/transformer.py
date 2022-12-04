@@ -8,7 +8,7 @@ class Transformer:
     def transform(
         raw_msg: models.WatchingProgressKafkaSchema,
     ) -> models.WatchingProgressClickHouseSchema:
-        """Transforms kafka messages to clickhouse table schema"""
+        """Transforms etl messages to clickhouse table schema"""
         return models.WatchingProgressClickHouseSchema(
             user_id=raw_msg.user_id,
             film_id=raw_msg.movie_id,

@@ -10,7 +10,7 @@ async def get_kafka_consumer() -> AIOKafkaConsumer:
     consumer = AIOKafkaConsumer(
         config.kafka.watching_progress_topic,
         bootstrap_servers=f"{config.kafka.host}:{config.kafka.port}",
-        group_id=config.kafka.consumer_group,
+        group_id=config.kafka.consumer_group_id,
     )
 
     await consumer.start()

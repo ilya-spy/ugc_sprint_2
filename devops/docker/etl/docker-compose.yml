@@ -8,26 +8,45 @@ networks:
 services:
   kafka:
     image: confluentinc/cp-kafka:latest
-    container_name: kafka-node1
-    hostname: kafka-node1
+    hostname: kafka
+    container_name: kafka
     env_file:
       - ../../kafka/.env
     ports:
-      - "29092:29092"
+      - "9092:9092"
     depends_on:
       - zookeeper
+    networks:
+      - yp_network
 
   zookeeper:
     image: zookeeper:3.5
-    container_name: kafka-zookeeper
-    hostname: kafka-zookeeper
+    container_name: zookeeper
+    hostname: zookeeper
     ports:
       - "2888:2888"
+    networks:
+      - yp_network
+
+  etl:
+    build:
+      context: ../../..
+      dockerfile: devops/docker/etl/Dockerfile
+    command: ["python", "etl/main.py"]
+    networks:
+      - yp_network
+    env_file:
+      - ../../clickhouse/.env
+    depends_on:
+      - kafka
+    ports:
+      - "8000:8000"
+
 
   kafka-ui:
     image: provectuslabs/kafka-ui
-    hostname: kafka-ui
-    container_name: kafka-ui
+    hostname: etl-ui
+    container_name: etl-ui
     ports:
       - "8080:8080"
     environment:
@@ -37,3 +56,5 @@ services:
     depends_on:
       - zookeeper
       - kafka
+    networks:
+      - yp_network

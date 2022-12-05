@@ -1,8 +1,8 @@
-import json
 from functools import lru_cache
 
 from fastapi import Depends
 
+from models.event import KafkaEvent
 from db.kafka import get_kafka, AIOKafkaProducer
 
 
@@ -10,12 +10,8 @@ class EventStorageService:
     def __init__(self, kafka: AIOKafkaProducer):
         self.kafka = kafka
 
-    async def send(self, topic_name: str, partition_name: str, data: dict) -> None:
-        await self.kafka.send(
-            topic=topic_name,
-            partition=partition_name,
-            value=json.dumps(data).encode("ascii")
-        )
+    async def send(self, topic_name: str, model: KafkaEvent) -> None:
+        await self.kafka.send(topic=topic_name, key=model.key, value=model.value)
 
         return None
 

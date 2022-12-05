@@ -75,7 +75,7 @@ clickhouse/docker/node4:
 #
 # Команды развертывания и доступа в Kafka
 #
-kafka/%: export DOCKER_DIR := devops/docker/kafka
+kafka/%: export DOCKER_DIR := devops/docker/etl
 
 kafka/dev/%: export DOCKER_TARGET := dev
 kafka/prod/%: export DOCKER_TARGET := prod

@@ -1,1 +1,0 @@
-from db.kafka_messaging.producers.watching_progress import WatchingProgressProducer

@@ -5,7 +5,6 @@ from fastapi import Depends
 from models.event import KafkaEvent
 from db.kafka import get_kafka, AIOKafkaProducer
 
-
 class EventStorageService:
     def __init__(self, kafka: AIOKafkaProducer):
         self.kafka = kafka
@@ -18,6 +17,6 @@ class EventStorageService:
 
 @lru_cache()
 def get_event_storage_service(
-    kafka: AIOKafkaProducer = Depends(get_kafka)
+    kafka: AIOKafkaProducer = Depends(get_kafka),
 ) -> EventStorageService:
     return EventStorageService(kafka)

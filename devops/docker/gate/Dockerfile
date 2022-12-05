@@ -56,7 +56,7 @@ FROM base AS develop
 
 USER root
 
-RUN apt-get install -y vim make curl git tree jq
+RUN apt-get install -y vim make curl git tree jq iputils-ping
 
 USER ${USER}
 

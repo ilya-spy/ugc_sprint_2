@@ -11,4 +11,4 @@ services:
     ports:
       - "8004:8000"
     volumes:
-      - ../../../src/gate:/usr/src/app
+      - ../../../gate:/usr/src/app

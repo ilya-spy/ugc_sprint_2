@@ -61,5 +61,13 @@ curl -XPOST -H "Content-Type: application/json" http://localhost/auth_api/v1/use
 export AUTH_API_ACCESS_TOKEN=$(curl -s -XPOST -H "Content-Type: application/json" http://localhost/auth_api/v1/login -d '{"username": "test_user", "password": "12345"}' | jq '.access' | xargs -L 1)
 
 # отправляем данные от имени авторизованного пользователя
-curl -X 'POST' 'http://localhost:8004/api/v1/progress/' -H 'accept: application/json' -H "Authorization: Bearer $AUTH_API_ACCESS_TOKEN" -d ''
+curl -X 'POST' \
+  'http://localhost:8004/api/v1/progress/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'accept: application/json' -H "Authorization: Bearer $AUTH_API_ACCESS_TOKEN" \
+  -d '{
+  "movie_id": "84906673-b9f2-44a6-a4e6-2e1d278726ea",
+  "frames": 123
+}'
 ```

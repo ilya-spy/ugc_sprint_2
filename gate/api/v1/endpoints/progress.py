@@ -1,3 +1,8 @@
+from fastapi import APIRouter, Depends, Request, HTTPException, status
+from pydantic import ValidationError
+
+from models.event import InputEvent, WatchProgressEvent
+
 from api.schemas.common import DefaultSuccessResponse
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import ValidationError
@@ -10,6 +15,7 @@ router = APIRouter()
 @router.post(path="/", response_model=DefaultSuccessResponse)
 async def save(
     request: Request,
+    event: InputEvent,
     event_storage_service: EventStorageService = Depends(get_event_storage_service),
     auth_api_service: AuthApiService = Depends(get_auth_api_service),
 ) -> DefaultSuccessResponse:
@@ -20,6 +26,14 @@ async def save(
             status_code=status.HTTP_404_NOT_FOUND, detail="user not found"
         )
 
-    await event_storage_service.send("tp_1", {"seconds": 1, "user_id": str(user.id)})
+    model = WatchProgressEvent(
+        **(event.dict()),
+        user_id=user.id,
+    )
+
+    await event_storage_service.send(
+        topic_name="watching_progress",
+        model=model.convert_to_kafka_event(),
+    )
 
     return DefaultSuccessResponse()

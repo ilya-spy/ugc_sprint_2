@@ -6,7 +6,7 @@ from core import config
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from gate.db import kafka
+from db import kafka
 
 app = FastAPI(
     title=config.APP_NAME,

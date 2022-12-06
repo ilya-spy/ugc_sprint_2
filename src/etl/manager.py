@@ -36,5 +36,6 @@ class Manager:
             data_to_load = self.data_to_load()
             try:
                 await self.loader_obj.load(ch_msgs=data_to_load)
+                await self.extractor_obj.kafka_client.commit()
             except Error:
                 logger.exception("ClickHouse error")

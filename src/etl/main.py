@@ -12,9 +12,9 @@ async def main():
     load = loader.get_loader()
 
     manage = manager.Manager(
-        extractor=extract,
-        transformer=transform,
-        loader=load,
+        extractor_obj=extract,
+        transformer_obj=transform,
+        loader_obj=load,
     )
 
     try:

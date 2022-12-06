@@ -11,11 +11,11 @@ logger = getLogger(__name__)
 
 class Extractor:
     def __init__(self, extractor: AIOKafkaConsumer):
-        self.extractor = extractor
+        self.kafka_client = extractor
 
     async def extract(self) -> AsyncIterator[KafkaSchema]:
         """Extracting batch of etl messages"""
-        data = await self.extractor.getmany(timeout_ms=1000, max_records=10000000)
+        data = await self.kafka_client.getmany(timeout_ms=1000, max_records=10000000)
         for pt, msgs in data.items():
             for msg in msgs:
                 try:

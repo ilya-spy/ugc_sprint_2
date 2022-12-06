@@ -1,6 +1,3 @@
-from fastapi import APIRouter, Depends, Request, HTTPException, status
-from pydantic import ValidationError
-
 from models.event import InputEvent, WatchProgressEvent
 
 from api.schemas.common import DefaultSuccessResponse

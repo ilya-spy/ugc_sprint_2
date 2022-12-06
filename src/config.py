@@ -83,10 +83,3 @@ def setup_logger(logger: logging.Logger):
     logger.setLevel(config.loglevel)
 
     return logger
-
-
-if __name__ == "__main__":
-    from pprint import pprint
-
-    pprint("### Application configuration: \n")
-    pprint(config.dict())

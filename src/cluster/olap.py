@@ -1,7 +1,8 @@
-import logging
 import uuid
 
-from config import config, setup_logger
+from core.config import config
+from core.logger import get_logger, setup_logger
+
 from db.clickhouse import (
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
@@ -9,7 +10,7 @@ from db.clickhouse import (
     IDistributedOLAPData,
 )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 logger = setup_logger(logger)
 
 

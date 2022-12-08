@@ -2,7 +2,7 @@ import uuid
 from functools import lru_cache
 from typing import AsyncIterator
 
-from config import config
+from core.config import config
 from db.clickhouse import ClickHouseClient, IDistributedOLAPData, IDistributedOLAPTable
 from etl.models import WatchingProgressClickHouseSchema as CHSchema
 

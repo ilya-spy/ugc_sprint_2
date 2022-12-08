@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from aiokafka import AIOKafkaConsumer
 
-from config import config
+from core.config import config
 
 
 @lru_cache

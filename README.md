@@ -10,7 +10,7 @@
 make ugc/dev/setup
 # после исполнения необходимо создать общую структуру ClickHouse с учетом шардов, реплик и таблиц 
 make clickhouse/docker/admin  
-clickhouse_admin@clickhouse-admin:/usr/src/clickhouse_admin$  python main.py
+olap@clickhouse-admin:/usr/src/ugc$  python cluster/main.py
 ```
 
 # Запуск отдельных частей сервиса
@@ -29,7 +29,7 @@ make clickhouse/teardown/prod
 ```
 # Инициализация кластера  
 make clickhouse/docker/admin  
-clickhouse_admin@clickhouse-admin:/usr/src/clickhouse_admin$  python main.py
+olap@clickhouse-admin:/usr/src/ugc$  python cluster/main.py
 
 # Доступ в ноды кластера и работа с SQL напрямую  
 make clickhouse/docker/node2  

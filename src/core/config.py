@@ -1,7 +1,7 @@
 from pydantic import BaseSettings, Field
 
-from db.config import OLAPSettings
-from db.config import KafkaConfig
+from db.clickhouse.config import ClickHouseConfig
+from db.kafka.config import KafkaConfig
 
 class Config(BaseSettings):
     """Настройки приложения."""
@@ -11,7 +11,7 @@ class Config(BaseSettings):
     debug: bool = Field(default=True)
     loglevel: str = Field(default="DEBUG")
 
-    olap: OLAPSettings = OLAPSettings()
+    olap: ClickHouseConfig = ClickHouseConfig()
     kafka: KafkaConfig = KafkaConfig()
 
 

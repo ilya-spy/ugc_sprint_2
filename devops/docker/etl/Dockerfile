@@ -10,14 +10,14 @@ ARG gid=1000
 ENV USER=etl
 ENV GROUP=etl
 ENV HOMEDIR=/home/${USER}
-ENV APP_HOME=/usr/src/app
-ENV APP_REQUIREMENTS=/usr/src/app_requirements
+ENV APP_HOME=/usr/src
+ENV APP_REQUIREMENTS=/usr/requirements
 ENV PATH="/home/${USER}/.local/bin:${PATH}"
 ENV PYTHONPATH=${APP_HOME}
 
 
-RUN mkdir ${APP_HOME}
-RUN mkdir ${APP_REQUIREMENTS}
+RUN mkdir -p ${APP_HOME}
+RUN mkdir -p ${APP_REQUIREMENTS}
 WORKDIR ${APP_HOME}
 
 # Create an unprivileged user

@@ -5,7 +5,7 @@ from typing import List
 
 from clickhouse_driver import Client
 
-from core.logger import get_logger, setup_logger
+from core.logging import get_logger, setup_logger
 
 logger = get_logger(__name__)
 logger = setup_logger(logger)

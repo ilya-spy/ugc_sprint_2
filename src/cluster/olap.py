@@ -1,9 +1,9 @@
 import uuid
 
 from core.config import config
-from core.logger import get_logger, setup_logger
+from core.logging import get_logger, setup_logger
 
-from db.clickhouse import (
+from db.clickhouse.manager import (
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
     ClickHouseReplicatedTable,

@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import List
 
 import aiohttp
 from models.user import User, UserRole
@@ -7,7 +8,7 @@ from core.config import config
 
 class AuthApiService:
     @staticmethod
-    async def get_user_role(headers: dict) -> list[UserRole]:
+    async def get_user_role(headers: dict) -> List[UserRole]:
         """
         Запросить Роли Пользователя. Пользователь закодирован в заголовках, с помощью JWT-токена
         """

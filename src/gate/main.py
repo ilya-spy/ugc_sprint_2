@@ -1,12 +1,10 @@
-import asyncio
-
 from aiokafka import AIOKafkaProducer
-from api.v1.routes import api_v1_router
-from core.config import config
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from db import kafka
+from api.v1.routes import api_v1_router
+from db.kafka.producer import get_kafka_producer
+from core.config import config
 
 app = FastAPI(
     title=config.app_name,
@@ -17,17 +15,14 @@ app = FastAPI(
 
 app.include_router(api_v1_router, prefix="/api/v1")
 
-loop = asyncio.get_event_loop()
-kafka.producer = AIOKafkaProducer(
-    loop=loop, client_id=config.app_name, bootstrap_servers=config.kafka.instance
-)
-
 
 @app.on_event("startup")
 async def startup_event():
-    await kafka.producer.start()
+    kafka_producer: AIOKafkaProducer = get_kafka_producer()
+    await kafka_producer.start()
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    await kafka.producer.stop()
+    kafka_producer: AIOKafkaProducer = get_kafka_producer()
+    await kafka_producer.stop()

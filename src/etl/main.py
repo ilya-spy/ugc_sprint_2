@@ -1,11 +1,12 @@
 import asyncio
 
 from etl import extractor, loader, manager, transformer
-from etl.services.kafka_consumer import get_kafka_consumer
+from db.kafka.consumer import get_kafka_consumer
 
 
 async def main():
-    consumer = await get_kafka_consumer()
+    consumer =  get_kafka_consumer()
+    await consumer.start()
 
     extract = extractor.get_extractor(extractor=consumer)
     transform = transformer.get_transformer()

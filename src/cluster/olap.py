@@ -1,15 +1,16 @@
-import logging
 import uuid
 
-from config import config, setup_logger
-from db.clickhouse import (
+from core.config import config
+from core.logging import get_logger, setup_logger
+
+from db.clickhouse.manager import (
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
     ClickHouseReplicatedTable,
     IDistributedOLAPData,
 )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 logger = setup_logger(logger)
 
 

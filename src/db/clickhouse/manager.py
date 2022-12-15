@@ -1,13 +1,13 @@
 import abc
-import logging
+
 from dataclasses import dataclass, field
 from typing import List
 
 from clickhouse_driver import Client
 
-from config import setup_logger
+from core.logging import get_logger, setup_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 logger = setup_logger(logger)
 
 

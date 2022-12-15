@@ -11,17 +11,17 @@ RUN apt-get -y update && apt install -y software-properties-common apt-utils
 ARG uid=1000
 ARG gid=1000
 
-ENV USER=clickhouse_admin
-ENV GROUP=clickhouse_admin
+ENV USER=olap
+ENV GROUP=olap
 ENV HOMEDIR=/home/${USER}
-ENV APP_HOME=/usr/src/${USER}
-ENV APP_TEST="/usr/src/${USER}_tests"
-ENV APP_REQUIREMENTS="/usr/src/${USER}_requirements"
+ENV APP_HOME=/usr/src/ugc
+ENV APP_REQUIREMENTS="${APP_HOME}_lib"
 ENV PATH="/home/${USER}/.local/bin:${PATH}"
 ENV PYTHONPATH="${PYTHONPATH}:${APP_HOME}"
 
 RUN mkdir ${APP_HOME}
 RUN mkdir ${APP_REQUIREMENTS}
+
 WORKDIR ${APP_HOME}
 
 # Create an unpriviledged user

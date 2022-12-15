@@ -11,12 +11,14 @@ ARG gid=1000
 ENV USER=gatekeeper
 ENV GROUP=gatekeeper
 ENV HOMEDIR=/home/${USER}
-ENV APP_HOME=/usr/src/app
-ENV APP_REQUIREMENTS=/usr/src/app_requirements
+ENV APP_HOME=/usr/src
+ENV APP_REQUIREMENTS=/usr/requirements
 ENV PATH="/home/${USER}/.local/bin:${PATH}"
+ENV PYTHONPATH="${APP_HOME}/gate:${PYTHONPATH}"
 
-RUN mkdir ${APP_HOME}
-RUN mkdir ${APP_REQUIREMENTS}
+
+RUN mkdir -p ${APP_HOME}
+RUN mkdir -p ${APP_REQUIREMENTS}
 WORKDIR ${APP_HOME}
 
 # Create an unprivileged user
@@ -40,7 +42,7 @@ FROM base AS production
 
 USER root
 
-COPY --chown=${USER}:${GROUP} src/gate ${APP_HOME}
+COPY --chown=${USER}:${GROUP} src ${APP_HOME}
 
 USER ${USER}
 

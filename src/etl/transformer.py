@@ -1,3 +1,5 @@
+import uuid
+
 from functools import lru_cache
 
 from etl import models
@@ -8,8 +10,7 @@ class Transformer:
     def _retrieve_ids(msg_key: bytes):
         """Parsing of user_id and movie_id from etl message key"""
         raw = msg_key.decode()
-        unquoted = raw.rstrip()[1:-1]
-        user_id, movie_id = unquoted.split("_")
+        user_id, movie_id = raw.split("_")
         return user_id, movie_id
 
     def _map_keys(self, raw_msg: models.WatchingProgressKafkaSchema):
@@ -25,8 +26,8 @@ class Transformer:
         """Transforms etl messages to clickhouse table schema"""
         user_id, movie_id, frame = self._map_keys(raw_msg=raw_msg)
         return models.WatchingProgressClickHouseSchema(
-            user_id=user_id,
-            film_id=movie_id,
+            user_id=uuid.UUID(user_id),
+            film_id=uuid.UUID(movie_id),
             frame=frame,
             event_time=raw_msg.event_time,
         )

@@ -102,12 +102,12 @@ gate/prod/%: export DOCKER_TARGET := prod
 gate/dev/setup:
 	@make docker/prepare
 	@make docker/setup
-.PHONY: kafka/dev/setup
+.PHONY: gate/dev/setup
 
 gate/dev/teardown:
 	@make docker/prepare
 	@make docker/destroy
-.PHONY: kafka/dev/teardown
+.PHONY: gate/dev/teardown
 
 
 #
@@ -176,3 +176,13 @@ docker/down:
 docker/destroy:
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 .PHONY: docker/destroy
+
+#
+#  Команды настройки локального девелопмент окружения
+#
+pipenv/setup:
+	cd src/
+	pipenv install -r devops/clickhouse/requirements/base.txt
+	pipenv install -r devops/gate/requirements/base.txt
+	pipenv install -r devops/etl/requirements/base.txt
+	cd ../

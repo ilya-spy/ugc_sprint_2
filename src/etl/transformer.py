@@ -1,5 +1,4 @@
 import uuid
-
 from functools import lru_cache
 
 from etl import models

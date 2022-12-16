@@ -1,10 +1,10 @@
 from aiokafka import AIOKafkaProducer
+from api.v1.routes import api_v1_router
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from api.v1.routes import api_v1_router
-from db.kafka.producer import get_kafka_producer
 from core.config import config
+from db.kafka.producer import get_kafka_producer
 
 app = FastAPI(
     title=config.app_name,

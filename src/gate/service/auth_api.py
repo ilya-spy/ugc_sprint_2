@@ -3,6 +3,7 @@ from typing import List
 
 import aiohttp
 from models.user import User, UserRole
+
 from core.config import config
 
 

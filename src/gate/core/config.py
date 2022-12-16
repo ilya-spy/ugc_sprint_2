@@ -1,4 +1,5 @@
 from logging import config as logging_config
+
 from pydantic import BaseSettings, Field
 
 from core.logger import LOGGING
@@ -12,7 +13,8 @@ APP_NAME = "ugc_gate"
 # Корень проекта
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-KAFKA_INSTANCE="kafka:9092"
+KAFKA_INSTANCE = "kafka:9092"
+
 
 class KafkaConfig(BaseSettings):
     instance: str = Field(default="kafka:9092")
@@ -38,6 +40,7 @@ class Config(BaseSettings):
 
     kafka: KafkaConfig = KafkaConfig()
     auth_api: AuthAPIConfig = AuthAPIConfig()
+
 
 class ProductionConfig(Config):
     """Конфиг для продакшена."""

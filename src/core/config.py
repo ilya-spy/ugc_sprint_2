@@ -3,6 +3,7 @@ from pydantic import BaseSettings, Field
 from db.clickhouse.config import ClickHouseConfig
 from db.kafka.config import KafkaConfig
 
+
 class Config(BaseSettings):
     """Настройки приложения."""
 
@@ -37,5 +38,3 @@ if app_config == "dev":
     config = DevelopmentConfig()
 else:
     raise ValueError("Unknown environment stage")
-
-

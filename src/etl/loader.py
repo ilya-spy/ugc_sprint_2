@@ -3,7 +3,11 @@ from functools import lru_cache
 from typing import AsyncIterator
 
 from core.config import config
-from db.clickhouse.manager import ClickHouseClient, IDistributedOLAPData, IDistributedOLAPTable
+from db.clickhouse.manager import (
+    ClickHouseClient,
+    IDistributedOLAPData,
+    IDistributedOLAPTable,
+)
 from etl.models import WatchingProgressClickHouseSchema as CHSchema
 
 

@@ -1,6 +1,6 @@
 import asyncio
 
-from db.kafka.consumer import get_kafka_consumer
+from db.kafka.kfk_consumer import get_kafka_consumer
 from etl import extractor, loader, router, transformer
 
 

@@ -1,6 +1,6 @@
-from olap import ReplicatedOlapCluster
-
 from core.config import config
+
+from .olap import ReplicatedOlapCluster
 
 
 # TODO: move to olap.py

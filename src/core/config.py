@@ -1,7 +1,7 @@
 from pydantic import BaseSettings, Field
 
-from db.clickhouse.config import ClickHouseConfig
-from db.kafka.config import KafkaConfig
+from db.clickhouse.ch_config import ClickHouseConfig
+from db.kafka.kfk_config import KafkaConfig
 
 
 class Config(BaseSettings):

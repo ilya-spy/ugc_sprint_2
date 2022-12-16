@@ -3,7 +3,7 @@ from functools import lru_cache
 from typing import AsyncIterator
 
 from core.config import config
-from db.clickhouse.manager import (
+from db.clickhouse.ch_manager import (
     ClickHouseClient,
     IDistributedOLAPData,
     IDistributedOLAPTable,

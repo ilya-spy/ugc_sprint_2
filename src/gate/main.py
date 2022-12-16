@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from core.config import config
-from db.kafka.producer import get_kafka_producer
+from db.kafka.kfk_producer import get_kafka_producer
 
 app = FastAPI(
     title=config.app_name,

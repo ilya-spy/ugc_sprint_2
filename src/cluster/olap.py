@@ -2,7 +2,7 @@ import uuid
 
 from core.config import config  # type: ignore
 from core.logging_config import get_logger, setup_logger  # type: ignore
-from db.clickhouse.manager import (  # type: ignore
+from db.clickhouse.ch_manager import (  # type: ignore
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
     ClickHouseReplicatedTable,

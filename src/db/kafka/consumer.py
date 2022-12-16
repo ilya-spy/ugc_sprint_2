@@ -7,6 +7,7 @@ from core.config import config
 
 @lru_cache
 def get_kafka_consumer() -> AIOKafkaConsumer:
+    """Singleton async kafka consumer."""
     consumer = AIOKafkaConsumer(
         config.kafka.watching_progress_topic,
         bootstrap_servers=f"{config.kafka.host}:{config.kafka.port}",

@@ -30,7 +30,6 @@ class IDistributedOLAPTable:
 
     def __post_init__(self):
         """Вычислить дополнительные поля после инициализации основных"""
-
         # Имена колонок без типов, для формирвоания запросов на чтение/запись
         if not hasattr(self, "columns"):
             self.columns = self.schema
@@ -46,7 +45,6 @@ class IDistributedOLAPData:
 
     def __post_init__(self):
         """Вычислить дополнительные поля после инициализации основных"""
-
         # Массив данных, сериализованный в строку для записи в SQL
         self.serialized = ",".join(self.values)
 
@@ -121,14 +119,17 @@ class ClickHouseClient(IDistributedOLAPClient):
         self.client = Client(host=self.host, port=self.port)
 
     def show_databases(self):
+        """Show database"""
         operator = "SHOW DATABASES"
         return self.client.execute(operator)
 
     def create_distributed_db(self, db: str):
+        """Create distributed database"""
         operator = f"CREATE DATABASE IF NOT EXISTS {db} ON CLUSTER {self.cluster}"
         return self.client.execute(operator)
 
     def create_distributed_table(self, db: str, table: IDistributedOLAPTable):
+        """Create distributed table"""
         operator = f"CREATE TABLE IF NOT EXISTS {db}.{table.name}"
         header = f"{table.schema} Engine={table.engine}"
         logger.debug("%s %s", operator, header)
@@ -142,6 +143,7 @@ class ClickHouseClient(IDistributedOLAPClient):
     def insert_into_table(
         self, db: str, table: IDistributedOLAPTable, data: IDistributedOLAPData
     ):
+        """Insert into table"""
         operator = f"INSERT INTO {db}.{table.name} {table.columns}"
         data = f"VALUES {data.serialized}"
 
@@ -152,5 +154,6 @@ class ClickHouseClient(IDistributedOLAPClient):
         return result
 
     def fetch_table(self, db: str, table: IDistributedOLAPTable):
+        """Fetch data from table"""
         result = self.client.execute(f"SELECT * FROM {db}.{table.name}")
         return result

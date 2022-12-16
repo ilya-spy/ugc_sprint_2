@@ -15,6 +15,7 @@ async def save(
     event_storage_service: EventStorageService = Depends(get_event_storage_service),
     auth_api_service: AuthApiService = Depends(get_auth_api_service),
 ) -> DefaultSuccessResponse:
+    """Send event related to authorized user"""
     try:
         user = await auth_api_service.get_user_info(headers=dict(request.headers))
     except (TypeError, ValidationError):

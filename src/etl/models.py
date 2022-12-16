@@ -10,10 +10,11 @@ class WatchingProgressKafkaSchema(BaseModel):
     event_time: Union[int, float]
 
     @validator("event_time", pre=True, always=True)
-    def timestamp_to_ms(cls, v):
-        if v is not None:
-            v /= 1000
-        return v
+    def timestamp_to_ms(cls, value):
+        """Convert timestamp to ms"""
+        if value is not None:
+            value /= 1000
+        return value
 
 
 class WatchingProgressClickHouseSchema(BaseModel):

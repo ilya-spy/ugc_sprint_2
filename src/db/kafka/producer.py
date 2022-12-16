@@ -8,6 +8,7 @@ from core.config import config
 
 @lru_cache
 def get_kafka_producer() -> AIOKafkaProducer:
+    """Singleton async kafka producer"""
     loop = asyncio.get_event_loop()
 
     producer = AIOKafkaProducer(

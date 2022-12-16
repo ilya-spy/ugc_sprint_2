@@ -35,4 +35,5 @@ class AuthApiService:
 
 @lru_cache()
 def get_auth_api_service() -> AuthApiService:
+    """Singleton instance of AuthApiService"""
     return AuthApiService()

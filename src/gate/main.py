@@ -18,11 +18,13 @@ app.include_router(api_v1_router, prefix="/api/v1")
 
 @app.on_event("startup")
 async def startup_event():
+    """Startup routine"""
     kafka_producer: AIOKafkaProducer = get_kafka_producer()
     await kafka_producer.start()
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    """Shutdown routine"""
     kafka_producer: AIOKafkaProducer = get_kafka_producer()
     await kafka_producer.stop()

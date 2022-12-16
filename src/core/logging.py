@@ -4,11 +4,13 @@ from core.config import config
 
 
 def get_logger(name: str):
+    """Get logger"""
     # Create individual module-grained named loggers
     return logging.getLogger(name)
 
 
 def setup_logger(logger: logging.Logger):
+    """Logger setup"""
     # Create logging handlers
     c_handler = logging.StreamHandler()
 

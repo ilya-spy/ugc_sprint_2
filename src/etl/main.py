@@ -5,6 +5,7 @@ from etl import extractor, loader, manager, transformer
 
 
 async def main():
+    """ETL entrypoint"""
     consumer = get_kafka_consumer()
     await consumer.start()
 

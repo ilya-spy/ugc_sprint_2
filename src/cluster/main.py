@@ -5,7 +5,7 @@ from core.config import config
 
 # TODO: move to olap.py
 def init_cluster():
-    """init clickhouse olap cluster"""
+    """Init clickhouse olap cluster"""
     return ReplicatedOlapCluster(
         cluster=config.olap.cluster,
         path=config.olap.path,

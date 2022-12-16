@@ -1,6 +1,6 @@
 import logging
 
-from core.config import config
+from core.config import config  # type: ignore
 
 
 def get_logger(name: str):

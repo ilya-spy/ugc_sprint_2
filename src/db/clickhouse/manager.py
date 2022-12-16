@@ -2,9 +2,9 @@ import abc
 from dataclasses import dataclass, field
 from typing import List
 
-from clickhouse_driver import Client
+from clickhouse_driver import Client  # type: ignore
 
-from core.logging import get_logger, setup_logger
+from core.logging_config import get_logger, setup_logger
 
 logger = get_logger(__name__)
 logger = setup_logger(logger)
@@ -21,6 +21,7 @@ class IDistributedOLAPTable:
     COLUMN_TYPES = [COLUMN_INT32, COLUMN_INT64, COLUMN_DATETIME, COLUMN_UUID]
 
     name: str
+    engine: str = field(default="MergeTree()")
     schema: str = field(default="(id UUID)")
     partition: str = field(default="id")
     replica: str = field(default="default")
@@ -145,12 +146,12 @@ class ClickHouseClient(IDistributedOLAPClient):
     ):
         """Insert into table"""
         operator = f"INSERT INTO {db}.{table.name} {table.columns}"
-        data = f"VALUES {data.serialized}"
+        values = f"VALUES {data.serialized}"
 
         logger.debug(operator)
-        logger.debug(data)
+        logger.debug(values)
 
-        result = self.client.execute(" ".join([operator, data]))
+        result = self.client.execute(" ".join([operator, values]))
         return result
 
     def fetch_table(self, db: str, table: IDistributedOLAPTable):

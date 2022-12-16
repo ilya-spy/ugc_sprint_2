@@ -1,11 +1,11 @@
-from logging import config as logging_config
+from logging import config as logging
 
 from pydantic import BaseSettings, Field
 
-from core.logger import LOGGING
+from .logger import LOGGING
 
 # Применяем настройки логирования
-logging_config.dictConfig(LOGGING)
+logging.dictConfig(LOGGING)
 
 # наименование всего приложения (набора микросервисов)
 APP_NAME = "ugc_gate"
@@ -55,6 +55,7 @@ class DevelopmentConfig(Config):
 base_config = Config()
 app_config = base_config.app_config
 
+config: ProductionConfig | DevelopmentConfig
 if app_config == "prod":
     config = ProductionConfig()
 if app_config == "dev":

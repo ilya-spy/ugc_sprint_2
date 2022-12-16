@@ -1,7 +1,7 @@
 import asyncio
 from functools import lru_cache
 
-from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaProducer  # type: ignore
 
 from core.config import config
 

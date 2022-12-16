@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaConsumer  # type: ignore
 
 from core.config import config
 

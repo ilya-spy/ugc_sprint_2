@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from clickhouse_driver.errors import Error
+from clickhouse_driver.errors import Error  # type: ignore
 from pydantic import ValidationError
 
 from etl import extractor, loader, transformer

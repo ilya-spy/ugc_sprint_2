@@ -1,8 +1,8 @@
 import uuid
 
-from core.config import config
-from core.logging import get_logger, setup_logger
-from db.clickhouse.manager import (
+from core.config import config  # type: ignore
+from core.logging_config import get_logger, setup_logger  # type: ignore
+from db.clickhouse.manager import (  # type: ignore
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
     ClickHouseReplicatedTable,
@@ -19,6 +19,7 @@ class ReplicatedOlapCluster:
     def __init__(
         self, cluster: str, path: str, name: str, schema: str, shards: int = 2
     ):
+        """Constructor for ReplicatedOlapCluster"""
         self.cluster = cluster
         self.path = path
         self.shards = shards
@@ -115,6 +116,7 @@ class ReplicatedOlapCluster:
             "shard": shard,
             "key": config.olap.orderby,
         }
+        table: ClickHouseDistributedProxyTable | ClickHouseReplicatedTable
         if replica:
             logger.info("Create replicated table: %s", replica)
             table = ClickHouseReplicatedTable(**common_params)

@@ -32,6 +32,7 @@ class DevelopmentConfig(Config):
 # Choose default config
 app_config = Config().app_config
 
+config: ProductionConfig | DevelopmentConfig
 if app_config == "prod":
     config = ProductionConfig()
 if app_config == "dev":

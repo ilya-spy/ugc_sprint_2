@@ -1,7 +1,7 @@
 import asyncio
 
 from db.kafka.consumer import get_kafka_consumer
-from etl import extractor, loader, manager, transformer
+from etl import extractor, loader, router, transformer
 
 
 async def main():
@@ -13,7 +13,7 @@ async def main():
     transform = transformer.get_transformer()
     load = loader.get_loader()
 
-    manage = manager.Manager(
+    manage = router.Manager(
         extractor_obj=extract,
         transformer_obj=transform,
         loader_obj=load,

@@ -7,7 +7,7 @@ def orjson_dumps(values, *, default):
     return orjson.dumps(values, default=default).decode()
 
 
-class BaseModel(BaseModel):
+class BasicModel(BaseModel):
     """Базовый класс для всех Моделей данных. Переопределён сериализатор/десериализатор"""
 
     class Config:

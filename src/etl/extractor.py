@@ -2,7 +2,7 @@ from functools import lru_cache
 from logging import getLogger
 from typing import AsyncIterator
 
-from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaConsumer  # type: ignore
 from pydantic import ValidationError
 
 from etl.models import WatchingProgressKafkaSchema as KafkaSchema

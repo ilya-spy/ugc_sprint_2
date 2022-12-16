@@ -1,4 +1,4 @@
-from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaProducer  # type: ignore
 from api.v1.routes import api_v1_router
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse

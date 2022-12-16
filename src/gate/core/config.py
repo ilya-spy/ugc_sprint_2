@@ -2,7 +2,7 @@ from logging import config as logging
 
 from pydantic import BaseSettings, Field
 
-from .logger import LOGGING
+from core.logger import LOGGING
 
 # Применяем настройки логирования
 logging.dictConfig(LOGGING)

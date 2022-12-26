@@ -1,7 +1,6 @@
-from models.event import InputEvent, WatchProgressEvent
-
 from api.schemas.common import DefaultSuccessResponse
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from models.event import InputEvent, WatchProgressEvent
 from pydantic import ValidationError
 from service.auth_api import AuthApiService, get_auth_api_service
 from service.event_storage import EventStorageService, get_event_storage_service
@@ -16,6 +15,7 @@ async def save(
     event_storage_service: EventStorageService = Depends(get_event_storage_service),
     auth_api_service: AuthApiService = Depends(get_auth_api_service),
 ) -> DefaultSuccessResponse:
+    """Send event related to authorized user"""
     try:
         user = await auth_api_service.get_user_info(headers=dict(request.headers))
     except (TypeError, ValidationError):

@@ -1,7 +1,8 @@
 from pydantic import BaseSettings, Field
 
-from db.clickhouse.config import ClickHouseConfig
-from db.kafka.config import KafkaConfig
+from db.clickhouse.ch_config import ClickHouseConfig
+from db.kafka.kfk_config import KafkaConfig
+
 
 class Config(BaseSettings):
     """Настройки приложения."""
@@ -31,11 +32,10 @@ class DevelopmentConfig(Config):
 # Choose default config
 app_config = Config().app_config
 
+config: ProductionConfig | DevelopmentConfig
 if app_config == "prod":
     config = ProductionConfig()
 if app_config == "dev":
     config = DevelopmentConfig()
 else:
     raise ValueError("Unknown environment stage")
-
-

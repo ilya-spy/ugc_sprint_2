@@ -1,14 +1,16 @@
 import logging
 
-from core.config import config
+from core.config import config  # type: ignore
 
 
 def get_logger(name: str):
+    """Get logger"""
     # Create individual module-grained named loggers
     return logging.getLogger(name)
 
 
 def setup_logger(logger: logging.Logger):
+    """Logger setup"""
     # Create logging handlers
     c_handler = logging.StreamHandler()
 

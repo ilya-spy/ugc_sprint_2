@@ -1,9 +1,8 @@
 import uuid
 
-from core.config import config
-from core.logging import get_logger, setup_logger
-
-from db.clickhouse.manager import (
+from core.config import config  # type: ignore
+from core.logging_config import get_logger, setup_logger  # type: ignore
+from db.clickhouse.ch_manager import (  # type: ignore
     ClickHouseClient,
     ClickHouseDistributedProxyTable,
     ClickHouseReplicatedTable,
@@ -17,52 +16,10 @@ logger = setup_logger(logger)
 class ReplicatedOlapCluster:
     """Класс создаёт и поддерживает кластер из ClickHouse серверов"""
 
-    def init_node(self, idx: int, node: str):
-        """Инициализация отдельной ноды кластера"""
-        host = f"{self.cluster}-{node}"
-        logger.info("Init node %d: %s on host %s", idx, node, host)
-
-        client = ClickHouseClient(host=host, port=9000, cluster=self.cluster)
-
-        logger.info("Create shard database")
-        client.create_distributed_db("shard")
-
-        logger.info("Create replica database")
-        client.create_distributed_db("replica")
-
-        return client
-
-    def init_table(
-        self, node: ClickHouseClient, db: str, shard: str, replica: str = ""
-    ):
-        """Инициализация распределенной таблицы на ноде кластера"""
-        common_params = {
-            "name": config.olap.table,
-            "schema": config.olap.scheme,
-            "partition": config.olap.partition,
-            "replica": replica,
-            "root": config.olap.path,
-            "shard": shard,
-            "key": config.olap.orderby,
-        }
-        if replica:
-            logger.info("Create replicated table: %s", replica)
-            table = ClickHouseReplicatedTable(**common_params)
-        else:
-            logger.info(
-                "Finalize distributed table: %s on %s", config.olap.table, self.cluster
-            )
-            table = ClickHouseDistributedProxyTable(
-                **common_params, cluster=self.cluster
-            )
-
-        # Запросить создание выбранной таблицы или прокси
-        node.create_distributed_table(db, table)
-        return table
-
     def __init__(
         self, cluster: str, path: str, name: str, schema: str, shards: int = 2
-    ) -> None:
+    ):
+        """Constructor for ReplicatedOlapCluster"""
         self.cluster = cluster
         self.path = path
         self.shards = shards
@@ -130,3 +87,47 @@ class ReplicatedOlapCluster:
             )
 
             node.insert_into_table("default", frontend_table, (values))
+
+    def init_node(self, idx: int, node: str):
+        """Инициализация отдельной ноды кластера"""
+        host = f"{self.cluster}-{node}"
+        logger.info("Init node %d: %s on host %s", idx, node, host)
+
+        client = ClickHouseClient(host=host, port=9000, cluster=self.cluster)
+
+        logger.info("Create shard database")
+        client.create_distributed_db("shard")
+
+        logger.info("Create replica database")
+        client.create_distributed_db("replica")
+
+        return client
+
+    def init_table(
+        self, node: ClickHouseClient, db: str, shard: str, replica: str = ""
+    ):
+        """Инициализация распределенной таблицы на ноде кластера"""
+        common_params = {
+            "name": config.olap.table,
+            "schema": config.olap.scheme,
+            "partition": config.olap.partition,
+            "replica": replica,
+            "root": config.olap.path,
+            "shard": shard,
+            "key": config.olap.orderby,
+        }
+        table: ClickHouseDistributedProxyTable | ClickHouseReplicatedTable
+        if replica:
+            logger.info("Create replicated table: %s", replica)
+            table = ClickHouseReplicatedTable(**common_params)
+        else:
+            logger.info(
+                "Finalize distributed table: %s on %s", config.olap.table, self.cluster
+            )
+            table = ClickHouseDistributedProxyTable(
+                **common_params, cluster=self.cluster
+            )
+
+        # Запросить создание выбранной таблицы или прокси
+        node.create_distributed_table(db, table)
+        return table

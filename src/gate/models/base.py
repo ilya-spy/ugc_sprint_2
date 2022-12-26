@@ -1,5 +1,5 @@
-from model import BaseModel
+from model import BasicModel
 
 
-class BaseModel(BaseModel):
+class BaseModel(BasicModel):
     """Базовый класс для всех Моделей данных."""

@@ -13,6 +13,13 @@ APP_NAME = "ugc_gate"
 KAFKA_INSTANCE = "kafka:9092"
 
 
+class SentryConfig(BaseSettings):
+    dsn: str
+
+    class Config:
+        env_prefix = "sentry_"
+
+
 class KafkaConfig(BaseSettings):
     instance: str = Field(default="kafka:9092")
 
@@ -37,6 +44,7 @@ class Config(BaseSettings):
 
     kafka: KafkaConfig = KafkaConfig()
     auth_api: AuthAPIConfig = AuthAPIConfig()
+    sentry: SentryConfig = SentryConfig()
 
 
 class ProductionConfig(Config):

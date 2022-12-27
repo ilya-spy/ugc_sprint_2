@@ -1,4 +1,4 @@
-from models.base import BaseModel
+from models.base import BaseModel  # type: ignore
 from pydantic import UUID4
 
 

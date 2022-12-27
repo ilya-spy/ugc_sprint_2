@@ -2,7 +2,7 @@ from functools import lru_cache
 from typing import List
 
 import aiohttp
-from models.user import User, UserRole
+from models.user import User, UserRole  # type: ignore
 
 from core.config import config
 

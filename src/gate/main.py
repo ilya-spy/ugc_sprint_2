@@ -1,6 +1,6 @@
 import sentry_sdk
 from aiokafka import AIOKafkaProducer  # type: ignore
-from api.v1.routes import api_v1_router
+from api.v1.routes import api_v1_router  # type: ignore
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from sentry_sdk.integrations.fastapi import FastApiIntegration

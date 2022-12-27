@@ -1,4 +1,4 @@
-from model import BasicModel
+from model import BasicModel  # type: ignore
 
 
 class BaseModel(BasicModel):

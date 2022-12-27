@@ -1,9 +1,12 @@
-from api.schemas.common import DefaultSuccessResponse
+from api.schemas.common import DefaultSuccessResponse  # type: ignore
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from models.event import InputEvent, WatchProgressEvent
+from models.event import InputEvent, WatchProgressEvent  # type: ignore
 from pydantic import ValidationError
-from service.auth_api import AuthApiService, get_auth_api_service
-from service.event_storage import EventStorageService, get_event_storage_service
+from service.auth_api import AuthApiService, get_auth_api_service  # type: ignore
+from service.event_storage import (  # type: ignore
+    EventStorageService,
+    get_event_storage_service,
+)
 
 router = APIRouter()
 

@@ -1,4 +1,4 @@
-from api.schemas.base import BaseAPISchema
+from api.schemas.base import BaseAPISchema  # type: ignore
 from pydantic import Field
 
 

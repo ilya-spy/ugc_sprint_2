@@ -32,7 +32,7 @@ services:
     build:
       context: ../../..
       dockerfile: devops/docker/etl/Dockerfile
-    command: ["python", "etl/main.py"]
+    command: ["python", "etl/entrypoint.py"]
     networks:
       - yp_network
     env_file:

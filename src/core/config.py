@@ -4,6 +4,13 @@ from db.clickhouse.ch_config import ClickHouseConfig
 from db.kafka.kfk_config import KafkaConfig
 
 
+class SentryConfig(BaseSettings):
+    dsn: str
+
+    class Config:
+        env_prefix = "sentry_"
+
+
 class Config(BaseSettings):
     """Настройки приложения."""
 
@@ -14,6 +21,7 @@ class Config(BaseSettings):
 
     olap: ClickHouseConfig = ClickHouseConfig()
     kafka: KafkaConfig = KafkaConfig()
+    sentry: SentryConfig = SentryConfig()
 
 
 class ProductionConfig(Config):

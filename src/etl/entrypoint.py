@@ -1,7 +1,12 @@
 import asyncio
 
+import sentry_sdk
+
+from core.config import config
 from db.kafka.kfk_consumer import get_kafka_consumer
 from etl import extractor, loader, router, transformer
+
+sentry_sdk.init(dsn=config.sentry.dsn)
 
 
 async def main():

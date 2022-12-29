@@ -1,7 +1,9 @@
+import logging
+
 import sentry_sdk
 from aiokafka import AIOKafkaProducer  # type: ignore
 from api.v1.routes import api_v1_router  # type: ignore
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
@@ -34,3 +36,10 @@ async def shutdown_event():
     """Shutdown routine"""
     kafka_producer: AIOKafkaProducer = get_kafka_producer()
     await kafka_producer.stop()
+
+
+@app.get(path="/", status_code=200)
+def homepage(request: Request):
+    logging.error("Logging test")
+
+    return {"message": "Hello World!"}

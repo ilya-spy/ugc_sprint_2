@@ -1,0 +1,34 @@
+[2022-12-28 21:37:47,036.036] INFO [139824743212864] - Will watch for changes in these directories: ['/usr/src']
+[2022-12-28 21:37:47,046.046] INFO [139824743212864] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2022-12-28 21:37:47,062.062] INFO [139824743212864] - Started reloader process [1] using StatReload
+[2022-12-28 21:37:57,901.901] INFO [140544838731584] - Started server process [8]
+[2022-12-28 21:37:57,910.910] INFO [140544838731584] - Waiting for application startup.
+[2022-12-28 21:37:58,597.597] INFO [140544838731584] - Application startup complete.
+[2022-12-28 21:39:24,476.476] ERROR [140544787097344] - Logging test
+[2022-12-28 21:39:24,498.498] INFO [140544838731584] - 172.24.0.10:59906 - "GET / HTTP/1.0" 200
+[2022-12-28 21:39:39,843.843] ERROR [140544787097344] - Logging test
+[2022-12-28 21:39:39,848.848] INFO [140544838731584] - 172.24.0.1:61712 - "GET / HTTP/1.1" 200
+[2022-12-28 21:40:23,123.123] ERROR [140544787097344] - Logging test
+[2022-12-28 21:40:23,135.135] INFO [140544838731584] - 172.24.0.1:61722 - "GET / HTTP/1.1" 200
+[2022-12-28 21:43:08,713.713] WARNING [139824743212864] - StatReload detected changes in 'gate/main.py'. Reloading...
+[2022-12-28 21:43:08,880.880] INFO [140544838731584] - Shutting down
+[2022-12-28 21:43:08,993.993] INFO [140544838731584] - Waiting for application shutdown.
+[2022-12-28 21:43:09,037.037] INFO [140544838731584] - Application shutdown complete.
+[2022-12-28 21:43:09,047.047] INFO [140544838731584] - Finished server process [8]
+[2022-12-28 21:43:11,905.905] WARNING [139824743212864] - StatReload detected changes in 'gate/main.py'. Reloading...
+[2022-12-28 21:43:14,278.278] INFO [140375778867008] - Started server process [14]
+[2022-12-28 21:43:14,280.280] INFO [140375778867008] - Waiting for application startup.
+[2022-12-28 21:43:14,763.763] INFO [140375778867008] - Application startup complete.
+[2022-12-28 21:43:14,920.920] WARNING [139824743212864] - StatReload detected changes in 'gate/main.py'. Reloading...
+[2022-12-28 21:43:14,983.983] INFO [140375778867008] - Shutting down
+[2022-12-28 21:43:15,090.090] INFO [140375778867008] - Waiting for application shutdown.
+[2022-12-28 21:43:15,094.094] INFO [140375778867008] - Application shutdown complete.
+[2022-12-28 21:43:15,097.097] INFO [140375778867008] - Finished server process [14]
+[2022-12-28 21:43:17,368.368] INFO [140544817231680] - Started server process [18]
+[2022-12-28 21:43:17,371.371] INFO [140544817231680] - Waiting for application startup.
+[2022-12-28 21:43:17,626.626] INFO [140544817231680] - Application startup complete.
+[2022-12-28 21:43:37,465.465] INFO [140544817231680] - Shutting down
+[2022-12-28 21:43:37,728.728] INFO [140544817231680] - Waiting for application shutdown.
+[2022-12-28 21:43:38,469.469] INFO [140544817231680] - Application shutdown complete.
+[2022-12-28 21:43:39,238.238] INFO [140544817231680] - Finished server process [18]
+[2022-12-28 21:43:42,406.406] INFO [139824743212864] - Stopping reloader process [1]

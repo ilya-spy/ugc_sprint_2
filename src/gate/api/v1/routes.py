@@ -1,4 +1,4 @@
-from api.v1.endpoints import progress
+from api.v1.endpoints import progress  # type: ignore
 from fastapi import APIRouter
 
 api_v1_router = APIRouter()

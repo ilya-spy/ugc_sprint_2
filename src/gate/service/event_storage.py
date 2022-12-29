@@ -1,7 +1,7 @@
 from functools import lru_cache
 
 from fastapi import Depends
-from models.event import KafkaEvent
+from models.event import KafkaEvent  # type: ignore
 
 from db.kafka.kfk_producer import AIOKafkaProducer, get_kafka_producer
 

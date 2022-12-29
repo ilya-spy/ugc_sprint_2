@@ -1,19 +1,37 @@
+from typing import Union
+
 from pydantic import BaseSettings, Field
 
 from db.clickhouse.ch_config import ClickHouseConfig
 from db.kafka.kfk_config import KafkaConfig
 
 
+class SentryConfig(BaseSettings):
+    dsn: str
+
+    class Config:
+        env_prefix = "sentry_"
+
+
+class AuthAPIConfig(BaseSettings):
+    address: str = Field(default="http://auth_api:8000/")
+
+    class Config:
+        env_prefix = "auth_api_"
+
+
 class Config(BaseSettings):
     """Настройки приложения."""
 
-    app_name: str = Field(default="ugc_services")
+    app_name: str = Field(default="ugc_gate")
     app_config: str = Field(default="dev")
     debug: bool = Field(default=True)
     loglevel: str = Field(default="DEBUG")
 
     olap: ClickHouseConfig = ClickHouseConfig()
     kafka: KafkaConfig = KafkaConfig()
+    auth_api: AuthAPIConfig = AuthAPIConfig()
+    sentry: SentryConfig = SentryConfig()
 
 
 class ProductionConfig(Config):
@@ -32,7 +50,7 @@ class DevelopmentConfig(Config):
 # Choose default config
 app_config = Config().app_config
 
-config: ProductionConfig | DevelopmentConfig
+config: Union[ProductionConfig, DevelopmentConfig]
 if app_config == "prod":
     config = ProductionConfig()
 if app_config == "dev":

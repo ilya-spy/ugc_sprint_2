@@ -90,6 +90,23 @@ kafka/dev/teardown:
 	@make docker/destroy
 .PHONY: kafka/dev/teardown
 
+#
+# Команды развертывания и доступа в MongoDB
+#
+mongo/%: export DOCKER_DIR := devops/docker/mongo
+
+mongo/dev/%: export DOCKER_TARGET := dev
+mongo/prod/%: export DOCKER_TARGET := prod
+
+mongo/dev/setup:
+	@make docker/prepare
+	@make docker/setup
+.PHONY: mongo/dev/setup
+
+mongo/dev/teardown:
+	@make docker/prepare
+	@make docker/destroy
+.PHONY: mongo/dev/teardown
 
 #
 # Команды развёртывания API шлюза для отправки событий с отметками о просмотрах в Кафку

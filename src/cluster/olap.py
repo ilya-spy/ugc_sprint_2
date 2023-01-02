@@ -130,3 +130,17 @@ class ReplicatedOlapCluster:
             )
 
             node.insert_into_table("default", frontend_table, (values))
+
+
+def init_cluster():
+    """init clickhouse olap cluster"""
+    return ReplicatedOlapCluster(
+        cluster=config.olap.cluster,
+        path=config.olap.path,
+        name=config.olap.table,
+        schema=config.olap.scheme,
+        shards=4,
+    )
+
+if __name__ == "__main__":
+    olap_cluster = init_cluster()

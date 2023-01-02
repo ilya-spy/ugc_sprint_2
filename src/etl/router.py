@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from clickhouse_driver.errors import Error
+from clickhouse_driver.errors import Error  # type: ignore
 from pydantic import ValidationError
 
 from etl import extractor, loader, transformer
@@ -20,7 +20,7 @@ class Manager:
         self.loader_obj = loader_obj
 
     async def data_to_load(self):
-        """Extracting and transforming etl message to clickhouse schema"""
+        """Extract and transform etl message to clickhouse schema"""
         async for kafka_msg in self.extractor_obj.extract():
             if kafka_msg is not None:
                 try:
@@ -31,11 +31,12 @@ class Manager:
                     logger.exception("Wrong message key format")
 
     async def start(self):
-        """infinite loop for extracting, transforming and loading data from etl to clickhouse"""
+        """Infinite loop for extracting, transforming and loading data from etl to clickhouse"""
         while True:
             data_to_load = self.data_to_load()
             try:
                 await self.loader_obj.load(ch_msgs=data_to_load)
-                await self.extractor_obj.kafka_client.commit()
             except Error:
                 logger.exception("ClickHouse error")
+            else:
+                await self.extractor_obj.kafka_client.commit()

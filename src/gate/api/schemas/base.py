@@ -1,5 +1,5 @@
-from model import BaseModel
+from model import BasicModel  # type: ignore
 
 
-class BaseAPISchema(BaseModel):
+class BaseAPISchema(BasicModel):
     """Базовый класс для всех Схем данных API."""

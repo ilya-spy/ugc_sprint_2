@@ -2,7 +2,8 @@ from functools import lru_cache
 from typing import List
 
 import aiohttp
-from models.user import User, UserRole
+from models.user import User, UserRole  # type: ignore
+
 from core.config import config
 
 
@@ -34,4 +35,5 @@ class AuthApiService:
 
 @lru_cache()
 def get_auth_api_service() -> AuthApiService:
+    """Singleton instance of AuthApiService"""
     return AuthApiService()

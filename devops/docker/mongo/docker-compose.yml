@@ -115,6 +115,7 @@ services:
       - ../../mongo/config/config3:/data/db
       - ../../mongo/scripts:/scripts
 
+  # frontend styles
   mongos1:
     container_name: mongos1
     image: mongo
@@ -130,6 +131,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/scripts:/scripts
+      - ../../../test:/test
 
   mongos2:
     container_name: mongos2
@@ -146,3 +148,4 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/scripts:/scripts
+      - ../../../test:/test

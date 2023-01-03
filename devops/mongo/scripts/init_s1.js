@@ -7,13 +7,13 @@ const database = conn.getDB(dbname);
 
 sh.enableSharding(dbname);
 
-rating_db = "rating";
-database.createCollection(rating_db);
-sh.shardCollection(`${dbname}.${rating_db}`, {["user_id"]: "hashed"});
-database[rating_db].createIndex({["film_id"]: -1});
-database[rating_db].createIndex({["rating"]: -1});
+rating_collection = "rating";
+database.createCollection(rating_collection);
+sh.shardCollection(`${dbname}.${rating_collection}`, {["user_id"]: "hashed"});
+database[rating_collection].createIndex({["film_id"]: -1});
+database[rating_collection].createIndex({["rating"]: -1});
 
-review_db = "bookmark";
-database.createCollection(review_db);
-sh.shardCollection(`${dbname}.${review_db}`, {["user_id"]: "hashed"});
-database[review_db].createIndex({["film_id"]: -1});
+bookmark_db = "bookmark";
+database.createCollection(bookmark_db);
+sh.shardCollection(`${dbname}.${bookmark_db}`, {["user_id"]: "hashed"});
+database[bookmark_db].createIndex({["film_id"]: -1});

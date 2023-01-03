@@ -198,8 +198,7 @@ docker/destroy:
 #  Команды настройки локального девелопмент окружения
 #
 pipenv/setup:
-	cd src/
 	pipenv install -r devops/clickhouse/requirements/base.txt
 	pipenv install -r devops/gate/requirements/base.txt
 	pipenv install -r devops/etl/requirements/base.txt
-	cd ../
+	pipenv install -r devops/mongo/requirements/base.txt

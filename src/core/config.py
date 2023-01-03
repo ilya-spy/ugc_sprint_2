@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from pydantic import BaseSettings, Field
 
@@ -7,7 +7,7 @@ from db.kafka.kfk_config import KafkaConfig
 
 
 class SentryConfig(BaseSettings):
-    dsn: str
+    dsn: Optional[str]
 
     class Config:
         env_prefix = "sentry_"

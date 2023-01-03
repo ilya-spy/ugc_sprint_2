@@ -43,6 +43,19 @@ services:
       - "8000:8000"
     restart: on-failure
 
+  performance-test:
+    build:
+      context: ../../..
+      dockerfile: devops/docker/etl/Dockerfile
+    command: [ "python", "analytics_kafka.py" ]
+    networks:
+      - yp_network
+    env_file:
+      - ../../clickhouse/.env
+    depends_on:
+      - kafka
+    restart: on-failure
+
   kafka-ui:
     image: provectuslabs/kafka-ui
     hostname: etl-ui

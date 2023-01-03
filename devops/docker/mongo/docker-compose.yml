@@ -12,6 +12,8 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data1:/data/db
+      - ../../mongo/scripts:/scripts
+
 
   mongors1n2:
     container_name: mongors1n2
@@ -24,6 +26,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data2:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongors1n3:
     container_name: mongors1n3
@@ -36,6 +39,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data3:/data/db
+      - ../../mongo/scripts:/scripts
 
   # shard 2 replicas (3 count)
   mongors2n1:
@@ -49,6 +53,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data4:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongors2n2:
     container_name: mongors2n2
@@ -61,6 +66,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data5:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongors2n3:
     container_name: mongors2n3
@@ -73,6 +79,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/data/data6:/data/db
+      - ../../mongo/scripts:/scripts
 
   # config servers
   mongocfg1:
@@ -84,6 +91,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/config/config1:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongocfg2:
     container_name: mongocfg2
@@ -94,6 +102,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/config/config2:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongocfg3:
     container_name: mongocfg3
@@ -104,6 +113,7 @@ services:
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
       - ../../mongo/config/config3:/data/db
+      - ../../mongo/scripts:/scripts
 
   mongos1:
     container_name: mongos1
@@ -119,6 +129,7 @@ services:
       - "27017"
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
+      - ../../mongo/scripts:/scripts
 
   mongos2:
     container_name: mongos2
@@ -134,3 +145,4 @@ services:
       - "27017"
     volumes:
       - ../../mongo/etc/localtime:/etc/localtime:ro
+      - ../../mongo/scripts:/scripts

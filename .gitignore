@@ -8,3 +8,6 @@ venv/
 GITHUB_OUTPUT
 
 .mypy_cache/
+
+devops/mongo/config
+devops/mongo/data

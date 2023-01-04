@@ -64,10 +64,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: dir
-        run: |
-          ls -a
-
       - name: Install dependencies
         run: |
           pip install -r devops/ci/ci.txt

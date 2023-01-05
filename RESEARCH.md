@@ -8,21 +8,20 @@
 `make kafka\dev\setup`
 
 2. Инициализируем ноды
-Внутри соответсвующих контейнеров (cfg1, rs1n1, rs2n1, mongos1) запускаем скрипты инициализации из папки /scripts  
+Внутри соответствующих контейнеров (cfg1, rs1n1, rs2n1, mongos1) запускаем скрипты инициализации из папки /scripts  
 `root@mongocfg1#:  cat /scipts/init_cfg1.js | mongosh`  
 `root@mongors1n1#: cat /scipts/init_rs1n1.js | mongosh`  
-`root@mongors2n1#: cat /scipts/init_rs2n2.js | mongosh`  
+`root@mongors2n1#: cat /scipts/init_rs2n1.js | mongosh`  
 `root@mongos1#:    cat /scipts/init_s1.js | mongosh`  
 
-3. После успешной сборки контейнеров будет доступна ссылка по адресу http://127.0.0.1/, логинимся в контейнер mongos1
 
-4. Запускаем исследование MongoDB
+3. Запускаем исследование MongoDB
 `apt update`  
 `apt-get install python pip`  
 `pip install pymongo`  
 `python3 /test/analytics.py`  
 
-5. Проверяем результат тестирования нагрузки на Kafka по логам контейнера
+4. Проверяем результат тестирования нагрузки на Kafka по логам контейнера
 
 ## Итоги тестов
 ### MongoDB
@@ -41,4 +40,4 @@
 
 #### Поиск
 Поиск по массиву данных размером в 10 000 строк (1000 случайных выборок) Kafka c учетом отсутствия встроенного поиска и необходимости итерирования по всему массиву сообщений:  
-`0:04:17` 
+`0:04:17`

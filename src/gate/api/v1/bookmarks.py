@@ -7,7 +7,7 @@ from service.ugc_storage import BookmarkUGCService, get_bookmark_ugc_service
 router = APIRouter()
 
 
-@router.get(path="/")
+@router.get(path="/", response_model=Bookmarks)
 async def get_bm(
     user_id: UUID, bm_service: BookmarkUGCService = Depends(get_bookmark_ugc_service)
 ):

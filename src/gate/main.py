@@ -9,6 +9,7 @@ from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from core.config import config
 from db.kafka.kfk_producer import get_kafka_producer
+from db.mongo.mng_db import mongo_init
 
 sentry_sdk.init(
     dsn=config.sentry.dsn, integrations=[FastApiIntegration(transaction_style="url")]
@@ -22,6 +23,8 @@ app = FastAPI(
 )
 
 app.include_router(api_v1_router, prefix="/api/v1")
+
+mongo_init()
 
 
 @app.on_event("startup")

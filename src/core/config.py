@@ -4,6 +4,7 @@ from pydantic import BaseSettings, Field
 
 from db.clickhouse.ch_config import ClickHouseConfig
 from db.kafka.kfk_config import KafkaConfig
+from db.mongo.mng_config import MongoDBConfig
 
 
 class SentryConfig(BaseSettings):
@@ -32,6 +33,7 @@ class Config(BaseSettings):
     kafka: KafkaConfig = KafkaConfig()
     auth_api: AuthAPIConfig = AuthAPIConfig()
     sentry: SentryConfig = SentryConfig()
+    mongo: MongoDBConfig = MongoDBConfig()
 
 
 class ProductionConfig(Config):

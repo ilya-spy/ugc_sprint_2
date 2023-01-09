@@ -1,8 +1,8 @@
 from typing import Callable
 
-from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaConsumer  # type: ignore
 
-from utils.kafka.base import BaseConsumer
+from utils.kafka.base import BaseConsumer  # type: ignore
 
 
 class AIOConsumer(BaseConsumer):

@@ -2,7 +2,7 @@ import json
 from asyncio import Future
 from typing import Iterable
 
-from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaProducer  # type: ignore
 
 from utils.kafka.base import BaseProducer
 

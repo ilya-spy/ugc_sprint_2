@@ -1,7 +1,7 @@
 from typing import Final
 from uuid import uuid4
 
-from api.models._base_model import USER_ID
+from api.models._base_model import USER_ID  # type: ignore
 from fastapi import Query
 from fastapi.params import Query as QueryInstance
 from pydantic import Required

@@ -1,8 +1,8 @@
 from typing import Optional
 
-from motor.motor_asyncio import AsyncIOMotorClientSession  # noqa
-from motor.motor_asyncio import AsyncIOMotorDatabase  # noqa
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient  # type:ignore # noqa
+from motor.motor_asyncio import AsyncIOMotorClientSession  # type:ignore # noqa
+from motor.motor_asyncio import AsyncIOMotorDatabase  # type:ignore # noqa
 
 aio_mongo_client: Optional[AsyncIOMotorClient] = None
 aio_mongo_client_session: Optional[AsyncIOMotorClientSession] = None

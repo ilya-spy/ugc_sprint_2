@@ -5,7 +5,7 @@ import sentry_sdk
 from aiokafka import AIOKafkaProducer  # type: ignore
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient  # type: ignore
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from core.config import config
@@ -34,7 +34,7 @@ async def startup_event():
     logging.error("startup")
     logging.error(os.environ)
 
-    kafka_producer: AIOKafkaProducer = get_kafka_producer()
+    kafka_producer: AIOKafkaProducer = get_kafka_producer()  # type: ignore
     await kafka_producer.start()
 
     logging.error("mongo start")
@@ -48,7 +48,7 @@ async def startup_event():
 
     logging.error("routing init")
 
-    from api.v1.routes import api_v1_router  # noqa
+    from api.v1.routes import api_v1_router  # type: ignore # noqa
 
     app.include_router(api_v1_router, prefix="/api/v1")
 
@@ -56,7 +56,7 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Shutdown routine"""
-    kafka_producer: AIOKafkaProducer = get_kafka_producer()
+    kafka_producer: AIOKafkaProducer = get_kafka_producer()  # type: ignore
     await kafka_producer.stop()
 
     await mng_db.aio_mongo_client.end_session()

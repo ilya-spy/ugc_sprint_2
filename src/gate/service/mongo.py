@@ -2,9 +2,9 @@ from abc import abstractmethod
 from typing import Optional, Type, Union
 from uuid import UUID
 
-from api.models import BookmarkRecord, LikeRecord, RatingRecord
-from async_lru import alru_cache
-from motor.motor_asyncio import AsyncIOMotorClientSession  # noqa
+from api.models import BookmarkRecord, LikeRecord, RatingRecord  # type: ignore
+from async_lru import alru_cache  # type: ignore
+from motor.motor_asyncio import AsyncIOMotorClientSession  # type: ignore # noqa
 from motor.motor_asyncio import AsyncIOMotorCollection  # noqa
 from motor.motor_asyncio import AsyncIOMotorCursor  # noqa
 from motor.motor_asyncio import AsyncIOMotorDatabase  # noqa

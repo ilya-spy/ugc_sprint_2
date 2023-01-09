@@ -1,5 +1,5 @@
 # flake8: noqa
-from api.models._base_model import (
+from api.models._base_model import (  # type: ignore
     RATING_SCORE,
     USER_ID,
     BookmarkRecord,
@@ -7,7 +7,7 @@ from api.models._base_model import (
     RatingRecord,
     Response,
 )
-from api.models.film_view_event import MOVIE_ID, FilmEventParams
+from api.models.film_view_event import MOVIE_ID, FilmEventParams  # type: ignore
 
 __all__ = (
     "FilmEventParams",

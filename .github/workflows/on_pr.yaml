@@ -46,12 +46,7 @@ jobs:
         id: mypy
         run: |
           export MYPYPATH=src
-          mypy src/cluster
-          mypy src/core
-          mypy src/db
-          mypy src/etl
-          mypy src/gate
-          mypy src/manage.py
+          mypy src/
 
   tests:
     needs: [linters]

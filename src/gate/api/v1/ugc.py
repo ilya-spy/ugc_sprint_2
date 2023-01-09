@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from api.models import (
+from api.models import (  # type: ignore
     MOVIE_ID,
     RATING_SCORE,
     USER_ID,
@@ -10,7 +10,7 @@ from api.models import (
     Response,
 )
 from fastapi import APIRouter, Depends
-from service.mongo import (
+from service.mongo import (  # type: ignore
     MongoService,
     get_bookmarks_service,
     get_likes_service,

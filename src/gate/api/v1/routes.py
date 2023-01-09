@@ -1,4 +1,4 @@
-from api.v1 import ugc
+from api.v1 import ugc  # type: ignore
 from api.v1.endpoints import progress  # type: ignore
 from fastapi import APIRouter
 

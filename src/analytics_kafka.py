@@ -5,7 +5,7 @@ import random
 import time
 import uuid
 
-from aiokafka import AIOKafkaConsumer, AIOKafkaProducer, ConsumerRecord
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer, ConsumerRecord  # type: ignore
 
 from core.config import config
 from utils.kafka import AIOConsumer, AIOProducer

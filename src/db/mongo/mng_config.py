@@ -15,8 +15,8 @@ class ResearchMongoConfig(BaseSettings):
 
 
 class MongoDBConfig(BaseSettings):
-    host: str = Field(default="localhost")
+    host: str = Field(default="mongors1n1")
     port: int = Field(default=27017)
 
     class Config:
-        env_prefix = "mongodb-"
+        env_prefix = "mongodb_"

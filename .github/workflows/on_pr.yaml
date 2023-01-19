@@ -1,0 +1,84 @@
+name: Pull Request routine
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  linters:
+
+    name:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11" ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          pip install -r devops/clickhouse/requirements/base.txt -r devops/clickhouse/requirements/dev.txt -r devops/clickhouse/requirements/prod.txt
+          pip install -r devops/etl/requirements/base.txt -r devops/etl/requirements/dev.txt -r devops/etl/requirements/prod.txt
+          pip install -r devops/gate/requirements/base.txt -r devops/gate/requirements/dev.txt -r devops/gate/requirements/prod.txt
+
+      - name: Install linters
+        run: |
+          pip install -r devops/ci/ci.txt
+
+      - name: Run isort
+        id: isort
+        run: |
+          isort src/
+
+      - name: Run black
+        id: black
+        run: |
+          black src/
+
+      - name: Run flake8
+        id: flake8
+        run: |
+          flake8 src/
+
+      - name: Run mypy
+        id: mypy
+        run: |
+          export MYPYPATH=src
+          mypy src/
+
+  tests:
+    needs: [linters]
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11" ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          pip install -r devops/ci/ci.txt
+
+      - name: Run tests
+        run: |
+          pytest test/
+
+
+  notification:
+    needs: [linters, tests]
+    name: Notification via telegram
+    runs-on: ubuntu-latest
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} has just created a pull request.
+
+            Pull requests list: https://github.com/${{ github.repository }}/pulls

@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  admin:
+    build:
+      target: develop
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    command: ["/bin/bash"]
+    volumes:
+      - ../../../src:/usr/src/ugc
+
+  node2:
+    ports:
+      - "9001:9000"
+
+  node3:
+    ports:
+      - "9002:9000"
+
+  node4:
+    ports:
+      - "9003:9000"

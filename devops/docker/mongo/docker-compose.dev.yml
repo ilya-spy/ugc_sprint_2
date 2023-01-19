@@ -1,0 +1,57 @@
+networks:
+  yp_network:
+    name: yp_network
+    external: true
+
+services:
+
+  # shard 1 replicas (3 count)
+  mongors1n1:
+    ports:
+      - 27017:27017
+    networks:
+      - yp_network
+
+  mongors1n2:
+    ports:
+      - 27027:27017
+    networks:
+      - yp_network
+
+  mongors1n3:
+    ports:
+      - 27037:27017
+    networks:
+      - yp_network
+
+  # shard 2 replicas (3 count)
+  mongors2n1:
+    ports:
+      - 27047:27017
+    networks:
+      - yp_network
+
+  mongors2n2:
+    ports:
+      - 27057:27017
+    networks:
+      - yp_network
+
+  mongors2n3:
+    ports:
+      - 27067:27017
+    networks:
+      - yp_network
+
+  # access points
+  mongos1:
+    ports:
+      - 27019:27017
+    networks:
+      - yp_network
+
+  mongos2:
+    ports:
+      - 27020:27017
+    networks:
+      - yp_network

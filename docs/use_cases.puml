@@ -1,0 +1,75 @@
+@startuml
+actor       Браузер        as User
+participant Gate           as Gate
+participant AuthAPI        as AuthAPI
+participant Kafka          as Kafka
+participant ETL            as ETL
+participant ClickHouse     as CH
+
+title Диаграмма сервиса UGC
+
+group Сценарий 1: отправка события просмотра фильма в UGC
+
+User -> Gate: [POST] /api/v1/progress
+note left of Gate
+Header: Authorization: Bearer <JWT_Token>
+Body:
+{
+    "movie_id": <UUID4>,
+    "frames": 482
+}
+end note
+Gate -> AuthAPI: [GET] /api/v1/me
+note left of AuthAPI
+Проксируем заголовок авторизации
+Header: Authorization: Bearer <JWT_Token>
+end note
+Gate <- AuthAPI: информация о пользователе\nиз JWT токена
+note left of AuthAPI
+{
+    "id": <UUID4>,
+    "username": "my_name",
+    "email": "my_name@localhost",
+}
+end note
+Gate -> Kafka: сохранить событие
+note left of Kafka
+topic=user_watching_progress
+key="<user_id>_<movie_id>"
+value="482"
+end note
+Gate <- Kafka: 200 OK
+User <- Gate: 200 OK
+end
+
+group Сценарий 2: ETL. Перекачка данных из Kafka в ClickHouse
+
+Kafka <- ETL: Запросить пачку данных\nв интервале <from> <to>
+Kafka -> ETL: Данные
+note left of ETL
+[
+    {
+        "user_id": <UUID>,
+        "movie_id": <UUID>,
+        "frames": <int>,
+        "timestamp": <datetime>,
+    },
+    ...
+]
+end note
+ETL -> ETL: Переформатировать под ClickHouse
+ETL -> ETL: (Опционально) Обогатить данные добавив\nимя фильма и пользователя
+ETL -> CH: Отправить пачку данных
+note left of CH
+Schema:
+  id UUID,
+  user_id UUID,
+  film_id UUID,
+  frame Int64,
+  event_time DateTime
+end note
+ETL <- CH: 200 OK
+
+end
+
+@enduml
